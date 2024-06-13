@@ -114,6 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
             objElement.style.width = `${obj.width}px`; // Match with collision object width
             objElement.style.height = `${obj.height}px`;
         });
+
+        // Ensure the game view adjusts correctly for mobile devices
+        background.style.height = `${gameHeight}px`;
     }
 
     function initCollisionObjects() {
