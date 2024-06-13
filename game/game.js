@@ -80,12 +80,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (
                 charLeft + character.offsetWidth > obj.x &&
                 charLeft < obj.x + obj.width &&
-                charTop + character.offsetHeight >= obj.y &&
-                charTop + character.offsetHeight <= obj.y + obj.height
+                charTop + character.offsetHeight > obj.y &&
+                charTop < obj.y + obj.height
             ) {
-                charTop = obj.y - character.offsetHeight;
-                velocity = 0;
-                isJumping = false;
+                if (charTop + character.offsetHeight - velocity <= obj.y) {
+                    charTop = obj.y - character.offsetHeight;
+                    velocity = 0;
+                    isJumping = false;
+                } else if (charTop - velocity >= obj.y + obj.height) {
+                    charTop = obj.y + obj.height;
+                    velocity = 0;
+                } else if (charLeft + character.offsetWidth - velocity <= obj.x) {
+                    charLeft = obj.x - character.offsetWidth;
+                } else if (charLeft - velocity >= obj.x + obj.width) {
+                    charLeft = obj.x + obj.width;
+                }
                 onSurface = true;
                 break;
             }
@@ -98,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         character.style.top = `${charTop}px`;
+        character.style.left = `${charLeft}px`;
         requestAnimationFrame(applyGravity);
     }
 
