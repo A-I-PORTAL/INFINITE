@@ -8,16 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let scrollSpeed = 2;
 
     const collisionObjects = [
-        { x: 100, y: 450, width: 400, height: 10 }, // Adjusted width
-        { x: 300, y: 400, width: 400, height: 10 },
-        { x: 600, y: 350, width: 400, height: 10 },
-        { x: 900, y: 300, width: 400, height: 10 },
-        { x: 1200, y: 250, width: 400, height: 10 },
-        { x: 1500, y: 450, width: 400, height: 10 },
-        { x: 1800, y: 400, width: 400, height: 10 },
-        { x: 2100, y: 350, width: 400, height: 10 },
-        { x: 2400, y: 300, width: 400, height: 10 },
-        { x: 2700, y: 250, width: 400, height: 10 },
+        { x: 100, y: 450, width: 200, height: 10 }, // Adjusted width
+        { x: 300, y: 400, width: 200, height: 10 },
+        { x: 600, y: 350, width: 200, height: 10 },
+        { x: 900, y: 300, width: 200, height: 10 },
+        { x: 1200, y: 250, width: 200, height: 10 },
+        { x: 1500, y: 450, width: 200, height: 10 },
+        { x: 1800, y: 400, width: 200, height: 10 },
+        { x: 2100, y: 350, width: 200, height: 10 },
+        { x: 2400, y: 300, width: 200, height: 10 },
+        { x: 2700, y: 250, width: 200, height: 10 },
     ];
 
     function scrollBackground() {
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.width = `${gameWidth * 0.134}px`; // Adjusted to be twice the previous width
+            objElement.style.width = `${gameWidth * 0.067}px`; // Adjusted to match visible width
             objElement.style.height = `${gameHeight * 0.016}px`;
         });
     }
@@ -143,8 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    window.addEventListener('keydown', moveCharacter);
     window.addEventListener('resize', resizeGame);
+
+    document.addEventListener('keydown', moveCharacter);
 
     document.getElementById('up-button').addEventListener('touchstart', mobileControl);
     document.getElementById('left-button').addEventListener('touchstart', mobileControl);
