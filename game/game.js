@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const background = document.getElementById('background');
     const character = document.getElementById('character');
     let bgPosition = 0;
-    let gravity = 0.25; // Reduced gravity to half the speed
+    let gravity = 0.125; // Further reduce gravity speed
     let velocity = 0;
     let isJumping = false;
     let scrollSpeed = 2; // Background scroll speed
@@ -21,8 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            obj.x -= scrollSpeed;
-            objElement.style.left = obj.x + 'px';
+            objElement.style.transform = `translateX(${bgPosition}px)`;
         });
 
         requestAnimationFrame(scrollBackground);
@@ -36,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         switch (event.key) {
             case 'ArrowUp':
                 if (!isJumping) {
-                    velocity = -10;
+                    velocity = -5;
                     isJumping = true;
                 }
                 break;
@@ -69,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let onSurface = false;
         for (let obj of collisionObjects) {
             if (
-                charLeft + character.offsetWidth > obj.x &&
-                charLeft < obj.x + obj.width &&
+                charLeft + character.offsetWidth > obj.x + bgPosition &&
+                charLeft < obj.x + bgPosition + obj.width &&
                 charTop + character.offsetHeight >= obj.y &&
                 charTop + character.offsetHeight <= obj.y + obj.height
             ) {
@@ -119,8 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('keydown', moveCharacter);
     window.addEventListener('resize', resizeGame);
 
+    initCollisionObjects(); // Initialize collision objects
+    resizeGame(); // Initial resize
     scrollBackground();
     applyGravity();
-    resizeGame(); // Initial resize
-    initCollisionObjects(); // Initialize collision objects
 });
