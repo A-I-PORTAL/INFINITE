@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let velocity = 0;
     let isJumping = false;
     let scrollSpeed = 2;
+    let isPaused = false;
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     function scrollBackground() {
+        if (isPaused) return;
         bgPosition -= scrollSpeed;
         background.style.backgroundPositionX = `${bgPosition}px`;
 
@@ -40,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function moveCharacter(event) {
+        if (isPaused) return;
+
         const step = 10;
         let left = parseInt(window.getComputedStyle(character).left);
         let top = parseInt(window.getComputedStyle(character).top);
@@ -70,6 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function applyGravity() {
+        if (isPaused) return;
+
         let charTop = parseInt(window.getComputedStyle(character).top);
         let charLeft = parseInt(window.getComputedStyle(character).left);
 
@@ -158,6 +164,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function togglePause() {
+        isPaused = !isPaused;
+        if (!isPaused) {
+            scrollBackground();
+            applyGravity();
+        }
+    }
+
     window.addEventListener('resize', resizeGame);
 
     document.addEventListener('keydown', moveCharacter);
@@ -166,6 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('left-button').addEventListener('touchstart', mobileControl);
     document.getElementById('down-button').addEventListener('touchstart', mobileControl);
     document.getElementById('right-button').addEventListener('touchstart', mobileControl);
+
+    const pauseButton = document.createElement('div');
+    pauseButton.id = 'pause-button';
+    pauseButton.className = 'control-button';
+    pauseButton.innerText = '⏸️';
+    document.getElementById('mobile-controls').appendChild(pauseButton);
+    pauseButton.addEventListener('click', togglePause);
 
     window.addEventListener('touchstart', preventZoom, { passive: false });
     window.addEventListener('touchmove', preventZoom, { passive: false });
