@@ -42,7 +42,7 @@ body, html {
     position: absolute;
     bottom: 10%;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, 50%);
     width: 220px;
     height: 220px;
     display: grid;
