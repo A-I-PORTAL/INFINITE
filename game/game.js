@@ -24,22 +24,6 @@ const moveSpeed = 5;
 let jumping = false;
 let onPlatform = false;
 
-// Add this function to update the character's size based on container dimensions
-function updateCharacterSize() {
-    const containerWidth = gameContainer.offsetWidth;
-    const containerHeight = gameContainer.offsetHeight;
-
-    // Update the character's size based on container dimensions
-    character.style.width = containerWidth * 0.05 + 'px'; // 5% of the container width
-    character.style.height = 'auto'; // Maintain aspect ratio
-}
-
-// Update the character size when the window resizes
-window.addEventListener('resize', updateCharacterSize);
-
-// Initial size update
-updateCharacterSize();
-
 document.addEventListener('keydown', function(event) {
     switch (event.key) {
         case 'ArrowLeft':
@@ -134,6 +118,29 @@ function checkCollisions() {
     }
 }
 
+function updateCharacterSize() {
+    const containerWidth = gameContainer.offsetWidth;
+    character.style.width = containerWidth * 0.05 + 'px'; // 5% of container width
+    character.style.height = 'auto';
+}
+
+window.addEventListener('resize', function() {
+    updateCharacterSize();
+    updateCollisionObjectSizes();
+});
+
+function updateCollisionObjectSizes() {
+    const containerWidth = gameContainer.offsetWidth;
+    const containerHeight = gameContainer.offsetHeight;
+    collisionObjects.forEach((obj, index) => {
+        const collisionObjectDiv = document.getElementsByClassName('collision-object')[index];
+        collisionObjectDiv.style.left = obj.x + 'px';
+        collisionObjectDiv.style.top = obj.y + 'px';
+        collisionObjectDiv.style.width = obj.width + 'px';
+        collisionObjectDiv.style.height = obj.height + 'px';
+    });
+}
+
 function gameLoop() {
     velocityY += gravity;
     posX += velocityX;
@@ -153,4 +160,6 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+updateCharacterSize();
+updateCollisionObjectSizes();
 gameLoop();
