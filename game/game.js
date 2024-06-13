@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             obj.x -= scrollSpeed;
 
             if (obj.x + obj.width < 0) {
-                obj.x += 3000;
+                obj.x += 3000; // Reset position to the right after it goes off screen to the left
             }
 
             const objElement = document.getElementById(`collision-object-${index}`);
@@ -108,6 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         character.style.width = `${gameWidth * 0.05}px`;
         character.style.height = 'auto';
+
+        collisionObjects.forEach((obj, index) => {
+            const objElement = document.getElementById(`collision-object-${index}`);
+            objElement.style.width = `${gameWidth * 0.033}px`;
+            objElement.style.height = `${gameHeight * 0.016}px`;
+        });
     }
 
     function initCollisionObjects() {
@@ -131,6 +137,12 @@ document.addEventListener('DOMContentLoaded', () => {
         moveCharacter({ key: eventKey });
     }
 
+    function preventZoom(event) {
+        if (event.touches.length > 1) {
+            event.preventDefault();
+        }
+    }
+
     window.addEventListener('keydown', moveCharacter);
     window.addEventListener('resize', resizeGame);
 
@@ -138,6 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('down-button').addEventListener('touchstart', mobileControl);
     document.getElementById('left-button').addEventListener('touchstart', mobileControl);
     document.getElementById('right-button').addEventListener('touchstart', mobileControl);
+
+    document.addEventListener('touchstart', preventZoom, { passive: false });
+    document.addEventListener('touchmove', preventZoom, { passive: false });
 
     initCollisionObjects();
     resizeGame();
