@@ -1,47 +1,43 @@
-body, html {
+* {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    height: 100%;
+    box-sizing: border-box;
+}
+
+body, html {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #000;
+    height: 100%;
+    overflow: hidden;
 }
 
 #game-container {
     position: relative;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     overflow: hidden;
 }
 
 #background {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 200vw;
-    height: 100vh;
-    background: url('assets/background.jpg') repeat-x;
+    width: 100%;
+    height: 100%;
+    background: url('path/to/background.jpg') repeat-x;
     background-size: cover;
 }
 
 #character {
     position: absolute;
-    bottom: 10%;
     left: 50px;
-    width: 5%;
+    top: 50px;
+    width: 50px;
     height: auto;
 }
 
 .collision-object {
     position: absolute;
-    background-color: rgba(255, 0, 0, 0.5); /* semi-transparent red */
-    pointer-events: none; /* to make sure it doesn't interfere with the character's movement */
+    background: rgba(255, 0, 0, 0.5);
 }
 
-/* Mobile controls */
 #mobile-controls {
     position: absolute;
     bottom: 10px;
@@ -49,7 +45,10 @@ body, html {
     transform: translateX(-50%);
     display: flex;
     justify-content: space-around;
-    width: 200px;
+    width: 240px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
 }
 
 .control-button {
