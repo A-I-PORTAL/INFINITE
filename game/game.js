@@ -18,9 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function scrollBackground() {
         bgPosition -= scrollSpeed;
         background.style.backgroundPositionX = bgPosition + 'px';
-        
-        collisionObjects.forEach(obj => {
+
+        collisionObjects.forEach((obj, index) => {
+            const objElement = document.getElementById(`collision-object-${index}`);
             obj.x -= scrollSpeed;
+            objElement.style.left = obj.x + 'px';
         });
 
         requestAnimationFrame(scrollBackground);
@@ -102,9 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initCollisionObjects() {
         const gameContainer = document.getElementById('game-container');
-        collisionObjects.forEach(obj => {
+        collisionObjects.forEach((obj, index) => {
             const div = document.createElement('div');
             div.classList.add('collision-object');
+            div.id = `collision-object-${index}`;
             div.style.left = obj.x + 'px';
             div.style.top = obj.y + 'px';
             div.style.width = obj.width + 'px';
