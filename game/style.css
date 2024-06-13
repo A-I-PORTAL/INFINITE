@@ -40,18 +40,14 @@ body, html {
 
 #mobile-controls {
     position: absolute;
-    bottom: 25%; /* adjust to place controls halfway between original and current position */
-    left: 50%; /* center horizontally */
+    bottom: 25%; /* adjust to place controls midway */
+    left: 50%;
     transform: translateX(-50%);
-    width: 150px; /* Adjusted to fit plus formation */
-    height: 150px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 10px;
+    display: grid;
+    grid-template-areas: 
+        "up"
+        "left down right";
+    gap: 10px;
 }
 
 .control-button {
@@ -72,7 +68,6 @@ body, html {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-/* Arrange buttons in a plus formation */
 #up-button {
     grid-area: up;
 }
@@ -87,13 +82,4 @@ body, html {
 
 #right-button {
     grid-area: right;
-}
-
-#mobile-controls {
-    display: grid;
-    grid-template-areas:
-        ". up ."
-        "left . right"
-        ". down .";
-    grid-gap: 5px;
 }
