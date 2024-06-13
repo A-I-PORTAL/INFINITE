@@ -5,16 +5,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let gravity = 0.25; // Reduced gravity to half the speed
     let velocity = 0;
     let isJumping = false;
+    let scrollSpeed = 2; // Background scroll speed
 
     const collisionObjects = [
         { x: 100, y: 450, width: 100, height: 10 },
         { x: 300, y: 400, width: 100, height: 10 },
+        { x: 600, y: 350, width: 100, height: 10 },
+        { x: 900, y: 300, width: 100, height: 10 },
         // Add more collision objects as needed
     ];
 
     function scrollBackground() {
-        bgPosition -= 2; // Adjust the speed of scrolling
+        bgPosition -= scrollSpeed;
         background.style.backgroundPositionX = bgPosition + 'px';
+        
+        collisionObjects.forEach(obj => {
+            obj.x -= scrollSpeed;
+        });
+
         requestAnimationFrame(scrollBackground);
     }
 
@@ -40,6 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 character.style.left = left + step + 'px';
                 break;
         }
+
+        // Prevent character from scrolling off-screen horizontally
+        if (left < 0) {
+            character.style.left = '0px';
+        } else if (left + character.offsetWidth > window.innerWidth) {
+            character.style.left = window.innerWidth - character.offsetWidth + 'px';
+        }
     }
 
     function applyGravity() {
@@ -61,9 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 velocity = 0;
                 isJumping = false;
                 onSurface = true;
+                break;
             }
         }
 
+        // Check if the character falls off the screen
         if (charTop + character.offsetHeight > window.innerHeight && !onSurface) {
             charTop = 0;
             velocity = 0;
