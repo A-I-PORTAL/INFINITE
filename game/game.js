@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const gameContainer = document.getElementById('game-container');
     const background = document.getElementById('background');
     const character = document.getElementById('character');
     let bgPosition = 0;
@@ -63,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (left < 0) {
             character.style.left = '0px';
-        } else if (left + character.offsetWidth > window.innerWidth) {
-            character.style.left = `${window.innerWidth - character.offsetWidth}px`;
+        } else if (left + character.offsetWidth > gameContainer.clientWidth) {
+            character.style.left = `${gameContainer.clientWidth - character.offsetWidth}px`;
         }
     }
 
@@ -100,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (charTop + character.offsetHeight > window.innerHeight && !onSurface) {
+        if (charTop + character.offsetHeight > gameContainer.clientHeight && !onSurface) {
             charTop = 0;
             velocity = 0;
             isJumping = false;
@@ -112,13 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resizeGame() {
-        const gameContainer = document.getElementById('game-container');
         const gameWidth = gameContainer.clientWidth;
         const gameHeight = gameContainer.clientHeight;
 
         // Scale character proportionally to the game container
-        const characterScale = gameWidth / background.clientWidth;
-        character.style.width = `${gameWidth * 0.05}px`;
+        const characterScale = gameWidth / 800; // Assuming 800 is the reference width
+        character.style.width = `${characterScale * 50}px`; // 50 is the base width of the character
         character.style.height = 'auto';
 
         collisionObjects.forEach((obj, index) => {
@@ -134,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initCollisionObjects() {
-        const gameContainer = document.getElementById('game-container');
         collisionObjects.forEach((obj, index) => {
             const div = document.createElement('div');
             div.classList.add('collision-object');
