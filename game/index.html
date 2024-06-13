@@ -19,5 +19,21 @@
         </div>
     </div>
     <script src="game.js"></script>
+    <script>
+        // Ensure character size is proportional
+        function updateCharacterSize() {
+            const character = document.getElementById('character');
+            const gameContainerHeight = document.getElementById('game-container').clientHeight;
+            const baseHeight = 600; // Adjust this as the base height reference
+            const scaleFactor = gameContainerHeight / baseHeight;
+            character.style.width = `${50 * scaleFactor}px`; // Adjust the base size if needed
+        }
+
+        // Call the function to set initial character size
+        updateCharacterSize();
+
+        // Update character size on window resize
+        window.addEventListener('resize', updateCharacterSize);
+    </script>
 </body>
 </html>
