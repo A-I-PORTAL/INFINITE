@@ -7,21 +7,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let isJumping = false;
     let scrollSpeed = 2; // Background scroll speed
 
+    // Increase the number of collision objects to 10
     const collisionObjects = [
         { x: 100, y: 450, width: 100, height: 10 },
         { x: 300, y: 400, width: 100, height: 10 },
         { x: 600, y: 350, width: 100, height: 10 },
         { x: 900, y: 300, width: 100, height: 10 },
-        // Add more collision objects as needed
+        { x: 1200, y: 250, width: 100, height: 10 },
+        { x: 1500, y: 450, width: 100, height: 10 },
+        { x: 1800, y: 400, width: 100, height: 10 },
+        { x: 2100, y: 350, width: 100, height: 10 },
+        { x: 2400, y: 300, width: 100, height: 10 },
+        { x: 2700, y: 250, width: 100, height: 10 },
     ];
 
     function scrollBackground() {
         bgPosition -= scrollSpeed;
-        background.style.backgroundPositionX = bgPosition + 'px';
+        background.style.backgroundPositionX = `${bgPosition}px`;
 
         collisionObjects.forEach((obj, index) => {
+            obj.x -= scrollSpeed;
+
+            if (obj.x + obj.width < 0) {
+                obj.x += 3000; // Reset position to the right after it goes off screen to the left
+            }
+
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.transform = `translateX(${bgPosition}px)`;
+            objElement.style.left = `${obj.x}px`;
         });
 
         requestAnimationFrame(scrollBackground);
@@ -40,13 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 break;
             case 'ArrowDown':
-                character.style.top = top + step + 'px';
+                character.style.top = `${top + step}px`;
                 break;
             case 'ArrowLeft':
-                character.style.left = left - step + 'px';
+                character.style.left = `${left - step}px`;
                 break;
             case 'ArrowRight':
-                character.style.left = left + step + 'px';
+                character.style.left = `${left + step}px`;
                 break;
         }
 
@@ -54,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (left < 0) {
             character.style.left = '0px';
         } else if (left + character.offsetWidth > window.innerWidth) {
-            character.style.left = window.innerWidth - character.offsetWidth + 'px';
+            character.style.left = `${window.innerWidth - character.offsetWidth}px`;
         }
     }
 
@@ -68,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let onSurface = false;
         for (let obj of collisionObjects) {
             if (
-                charLeft + character.offsetWidth > obj.x + bgPosition &&
-                charLeft < obj.x + bgPosition + obj.width &&
+                charLeft + character.offsetWidth > obj.x &&
+                charLeft < obj.x + obj.width &&
                 charTop + character.offsetHeight >= obj.y &&
                 charTop + character.offsetHeight <= obj.y + obj.height
             ) {
@@ -88,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isJumping = false;
         }
 
-        character.style.top = charTop + 'px';
+        character.style.top = `${charTop}px`;
         requestAnimationFrame(applyGravity);
     }
 
@@ -97,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const gameWidth = gameContainer.clientWidth;
         const gameHeight = gameContainer.clientHeight;
 
-        character.style.width = gameWidth * 0.05 + 'px'; // Adjust character size proportionally
+        character.style.width = `${gameWidth * 0.05}px`; // Adjust character size proportionally
         character.style.height = 'auto';
     }
 
@@ -107,10 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.classList.add('collision-object');
             div.id = `collision-object-${index}`;
-            div.style.left = obj.x + 'px';
-            div.style.top = obj.y + 'px';
-            div.style.width = obj.width + 'px';
-            div.style.height = obj.height + 'px';
+            div.style.left = `${obj.x}px`;
+            div.style.top = `${obj.y}px`;
+            div.style.width = `${obj.width}px`;
+            div.style.height = `${obj.height}px`;
             gameContainer.appendChild(div);
         });
     }
