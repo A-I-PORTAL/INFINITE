@@ -16,34 +16,9 @@
             <div id="left-button" class="control-button">←</div>
             <div id="down-button" class="control-button">↓</div>
             <div id="right-button" class="control-button">→</div>
+            <div id="pause-button" class="control-button">⏸️</div>
         </div>
     </div>
     <script src="game.js"></script>
-    <script>
-        // Ensure character size is proportional to the background
-        function updateCharacterSize() {
-            const character = document.getElementById('character');
-            const background = document.getElementById('background');
-            const bgWidth = background.clientWidth;
-            const bgHeight = background.clientHeight;
-
-            // Set character size based on background size
-            const characterHeight = bgHeight * 0.1; // Character height is 10% of background height
-            const characterWidth = bgWidth * 0.05;  // Character width is 5% of background width
-
-            character.style.height = `${characterHeight}px`;
-            character.style.width = `${characterWidth}px`;
-
-            // Set character initial position to be in sync with background
-            character.style.top = `${bgHeight * 0.5}px`; // Middle of the background
-            character.style.left = `${bgWidth * 0.5}px`; // Middle of the background
-        }
-
-        // Call the function to set initial character size and position
-        updateCharacterSize();
-
-        // Update character size on window resize
-        window.addEventListener('resize', updateCharacterSize);
-    </script>
 </body>
 </html>
