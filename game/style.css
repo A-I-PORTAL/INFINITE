@@ -34,9 +34,9 @@ body, html {
     width: 5%;
     height: auto;
 }
+
 .collision-object {
     position: absolute;
     background-color: rgba(255, 0, 0, 0.5); /* semi-transparent red */
     pointer-events: none; /* to make sure it doesn't interfere with the character's movement */
 }
-
