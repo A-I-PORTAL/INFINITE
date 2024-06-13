@@ -1,174 +1,156 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const background = document.getElementById('background');
-    const character = document.getElementById('character');
-    let bgPosition = 0;
-    let gravity = 0.125;
-    let velocity = 0;
-    let isJumping = false;
-    let scrollSpeed = 2;
+const gameContainer = document.getElementById('game-container');
+const character = document.getElementById('character');
+const background = document.getElementById('background');
+const collisionObjects = [
+    { x: 500, y: 300, width: 300, height: 20 },
+    { x: 900, y: 400, width: 300, height: 20 },
+    { x: 1300, y: 500, width: 300, height: 20 },
+    { x: 1700, y: 600, width: 300, height: 20 },
+    { x: 2100, y: 700, width: 300, height: 20 },
+    { x: 2500, y: 800, width: 300, height: 20 },
+    { x: 2900, y: 300, width: 300, height: 20 },
+    { x: 3300, y: 400, width: 300, height: 20 },
+    { x: 3700, y: 500, width: 300, height: 20 },
+    { x: 4100, y: 600, width: 300, height: 20 }
+];
 
-    const collisionObjects = [
-        { x: 100, y: 450, width: 200, height: 10 },
-        { x: 300, y: 400, width: 200, height: 10 },
-        { x: 600, y: 350, width: 200, height: 10 },
-        { x: 900, y: 300, width: 200, height: 10 },
-        { x: 1200, y: 250, width: 200, height: 10 },
-        { x: 1500, y: 450, width: 200, height: 10 },
-        { x: 1800, y: 400, width: 200, height: 10 },
-        { x: 2100, y: 350, width: 200, height: 10 },
-        { x: 2400, y: 300, width: 200, height: 10 },
-        { x: 2700, y: 250, width: 200, height: 10 },
-    ];
+let posX = 50;
+let posY = 50;
+let velocityX = 0;
+let velocityY = 1; // Reduced speed
+const gravity = 0.2;
+const jumpStrength = 10;
+const moveSpeed = 5;
+let jumping = false;
+let onPlatform = false;
 
-    function scrollBackground() {
-        bgPosition -= scrollSpeed;
-        background.style.backgroundPositionX = `${bgPosition}px`;
+// Add this function to update the character's size based on container dimensions
+function updateCharacterSize() {
+    const containerWidth = gameContainer.offsetWidth;
+    const containerHeight = gameContainer.offsetHeight;
 
-        collisionObjects.forEach((obj, index) => {
-            obj.x -= scrollSpeed;
+    // Update the character's size based on container dimensions
+    character.style.width = containerWidth * 0.05 + 'px'; // 5% of the container width
+    character.style.height = 'auto'; // Maintain aspect ratio
+}
 
-            if (obj.x + obj.width < 0) {
-                obj.x += 3000; // Reset position to the right after it goes off screen to the left
+// Update the character size when the window resizes
+window.addEventListener('resize', updateCharacterSize);
+
+// Initial size update
+updateCharacterSize();
+
+document.addEventListener('keydown', function(event) {
+    switch (event.key) {
+        case 'ArrowLeft':
+            velocityX = -moveSpeed;
+            break;
+        case 'ArrowRight':
+            velocityX = moveSpeed;
+            break;
+        case 'ArrowUp':
+            if (!jumping && onPlatform) {
+                velocityY = -jumpStrength;
+                jumping = true;
             }
-
-            const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.left = `${obj.x}px`;
-        });
-
-        requestAnimationFrame(scrollBackground);
+            break;
+        case 'ArrowDown':
+            velocityY = moveSpeed;
+            break;
     }
-
-    function moveCharacter(event) {
-        const step = 10;
-        let left = parseInt(window.getComputedStyle(character).left);
-        let top = parseInt(window.getComputedStyle(character).top);
-
-        switch (event.key) {
-            case 'ArrowUp':
-                if (!isJumping) {
-                    velocity = -5;
-                    isJumping = true;
-                }
-                break;
-            case 'ArrowDown':
-                character.style.top = `${top + step}px`;
-                break;
-            case 'ArrowLeft':
-                character.style.left = `${left - step}px`;
-                break;
-            case 'ArrowRight':
-                character.style.left = `${left + step}px`;
-                break;
-        }
-
-        if (left < 0) {
-            character.style.left = '0px';
-        } else if (left + character.offsetWidth > window.innerWidth) {
-            character.style.left = `${window.innerWidth - character.offsetWidth}px`;
-        }
-    }
-
-    function applyGravity() {
-        let charTop = parseInt(window.getComputedStyle(character).top);
-        let charLeft = parseInt(window.getComputedStyle(character).left);
-
-        velocity += gravity;
-        charTop += velocity;
-
-        let onSurface = false;
-        for (let obj of collisionObjects) {
-            if (
-                charLeft + character.offsetWidth > obj.x &&
-                charLeft < obj.x + obj.width &&
-                charTop + character.offsetHeight > obj.y &&
-                charTop < obj.y + obj.height
-            ) {
-                if (charTop + character.offsetHeight - velocity <= obj.y) {
-                    charTop = obj.y - character.offsetHeight;
-                    velocity = 0;
-                    isJumping = false;
-                } else if (charTop - velocity >= obj.y + obj.height) {
-                    charTop = obj.y + obj.height;
-                    velocity = 0;
-                } else if (charLeft + character.offsetWidth - velocity <= obj.x) {
-                    charLeft = obj.x - character.offsetWidth;
-                } else if (charLeft - velocity >= obj.x + obj.width) {
-                    charLeft = obj.x + obj.width;
-                }
-                onSurface = true;
-                break;
-            }
-        }
-
-        if (charTop + character.offsetHeight > window.innerHeight && !onSurface) {
-            charTop = 0;
-            velocity = 0;
-            isJumping = false;
-        }
-
-        character.style.top = `${charTop}px`;
-        character.style.left = `${charLeft}px`;
-        requestAnimationFrame(applyGravity);
-    }
-
-    function resizeGame() {
-        const gameContainer = document.getElementById('game-container');
-        const gameWidth = gameContainer.clientWidth;
-        const gameHeight = gameContainer.clientHeight;
-
-        character.style.width = `${gameWidth * 0.05}px`;
-        character.style.height = 'auto';
-
-        collisionObjects.forEach((obj, index) => {
-            const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.width = `${obj.width}px`; // Match with collision object width
-            objElement.style.height = `${obj.height}px`;
-        });
-
-        // Ensure the game view adjusts correctly for mobile devices
-        background.style.height = `${gameHeight}px`;
-    }
-
-    function initCollisionObjects() {
-        const gameContainer = document.getElementById('game-container');
-        collisionObjects.forEach((obj, index) => {
-            const div = document.createElement('div');
-            div.classList.add('collision-object');
-            div.id = `collision-object-${index}`;
-            div.style.left = `${obj.x}px`;
-            div.style.top = `${obj.y}px`;
-            div.style.width = `${obj.width}px`;
-            div.style.height = `${obj.height}px`;
-            gameContainer.appendChild(div);
-        });
-    }
-
-    function mobileControl(event) {
-        const control = event.target.id.replace('-button', '');
-        const eventKey = `Arrow${control.charAt(0).toUpperCase() + control.slice(1)}`;
-        moveCharacter({ key: eventKey });
-    }
-
-    function preventZoom(event) {
-        if (event.touches.length > 1) {
-            event.preventDefault();
-        }
-    }
-
-    window.addEventListener('resize', resizeGame);
-
-    document.addEventListener('keydown', moveCharacter);
-
-    document.getElementById('up-button').addEventListener('touchstart', mobileControl);
-    document.getElementById('left-button').addEventListener('touchstart', mobileControl);
-    document.getElementById('down-button').addEventListener('touchstart', mobileControl);
-    document.getElementById('right-button').addEventListener('touchstart', mobileControl);
-
-    window.addEventListener('touchstart', preventZoom, { passive: false });
-    window.addEventListener('touchmove', preventZoom, { passive: false });
-
-    initCollisionObjects();
-    resizeGame();
-    scrollBackground();
-    applyGravity();
 });
+
+document.addEventListener('keyup', function(event) {
+    switch (event.key) {
+        case 'ArrowLeft':
+        case 'ArrowRight':
+            velocityX = 0;
+            break;
+        case 'ArrowDown':
+            velocityY = 0;
+            break;
+    }
+});
+
+// Mobile Controls
+document.getElementById('up-button').addEventListener('touchstart', function() {
+    if (!jumping && onPlatform) {
+        velocityY = -jumpStrength;
+        jumping = true;
+    }
+});
+
+document.getElementById('left-button').addEventListener('touchstart', function() {
+    velocityX = -moveSpeed;
+});
+
+document.getElementById('right-button').addEventListener('touchstart', function() {
+    velocityX = moveSpeed;
+});
+
+document.getElementById('down-button').addEventListener('touchstart', function() {
+    velocityY = moveSpeed;
+});
+
+document.querySelectorAll('.control-button').forEach(button => {
+    button.addEventListener('touchend', function() {
+        velocityX = 0;
+        velocityY = 0;
+    });
+});
+
+function checkCollisions() {
+    onPlatform = false;
+    collisionObjects.forEach(obj => {
+        if (posX < obj.x + obj.width &&
+            posX + character.offsetWidth > obj.x &&
+            posY < obj.y + obj.height &&
+            posY + character.offsetHeight > obj.y) {
+            if (velocityY > 0 && posY + character.offsetHeight - velocityY <= obj.y) {
+                posY = obj.y - character.offsetHeight;
+                velocityY = 0;
+                jumping = false;
+                onPlatform = true;
+            } else if (velocityY < 0 && posY - velocityY >= obj.y + obj.height) {
+                posY = obj.y + obj.height;
+                velocityY = 0;
+            } else if (velocityX > 0 && posX + character.offsetWidth - velocityX <= obj.x) {
+                posX = obj.x - character.offsetWidth;
+                velocityX = 0;
+            } else if (velocityX < 0 && posX - velocityX >= obj.x + obj.width) {
+                posX = obj.x + obj.width;
+                velocityX = 0;
+            }
+        }
+    });
+
+    // Check collisions with left and right boundaries
+    if (posX < 0) {
+        posX = 0;
+        velocityX = 0;
+    } else if (posX + character.offsetWidth > gameContainer.offsetWidth) {
+        posX = gameContainer.offsetWidth - character.offsetWidth;
+        velocityX = 0;
+    }
+}
+
+function gameLoop() {
+    velocityY += gravity;
+    posX += velocityX;
+    posY += velocityY;
+
+    checkCollisions();
+
+    if (posY > gameContainer.offsetHeight) {
+        posY = -character.offsetHeight;
+    }
+
+    character.style.left = posX + 'px';
+    character.style.top = posY + 'px';
+
+    background.style.left = -(posX % background.offsetWidth) + 'px';
+
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
