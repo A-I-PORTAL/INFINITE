@@ -1,64 +1,92 @@
-body, html {
+* {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    height: 100%;
+    box-sizing: border-box;
+}
+
+body, html {
     width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 #game-container {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     overflow: hidden;
-    background-color: #87CEEB;
 }
 
 #background {
     position: absolute;
-    width: 200%;
+    width: 3000px;
     height: 100%;
     background: url('assets/background.jpg') repeat-x;
-    animation: scrollBackground 10s linear infinite;
-}
-
-@keyframes scrollBackground {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    background-size: cover;
 }
 
 #character {
     position: absolute;
-    width: 5%; /* Set character width proportional to container width */
-    height: auto;
     left: 50px;
     top: 50px;
+    width: 50px;
+    height: auto;
 }
 
 .collision-object {
     position: absolute;
-    background-color: rgba(255, 0, 0, 0.5); /* Make it semi-transparent red for visibility */
+    background: rgba(255, 0, 0, 0.5);
 }
 
 #mobile-controls {
     position: absolute;
     bottom: 10%;
     left: 50%;
-    transform: translateX(-50%);
-    display: flex;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left . right"
+        ". down .";
+    grid-gap: 10px;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 20px;
 }
 
 .control-button {
+    width: 60px;
+    height: 60px;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    font-size: 24px;
-    border: none;
-    border-radius: 50%;
-    padding: 20px;
     text-align: center;
+    line-height: 60px;
+    font-size: 20px;
+    border-radius: 50%;
     user-select: none;
     cursor: pointer;
+}
+
+.control-button:active {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#up-button {
+    grid-area: up;
+}
+
+#left-button {
+    grid-area: left;
+}
+
+#down-button {
+    grid-area: down;
+}
+
+#right-button {
+    grid-area: right;
 }
