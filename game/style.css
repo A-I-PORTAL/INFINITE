@@ -1,92 +1,64 @@
-* {
+body, html {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body, html {
-    width: 100%;
-    height: 100%;
     overflow: hidden;
+    height: 100%;
+    width: 100%;
 }
 
 #game-container {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
+    background-color: #87CEEB;
 }
 
 #background {
     position: absolute;
-    width: 3000px;
+    width: 200%;
     height: 100%;
     background: url('assets/background.jpg') repeat-x;
-    background-size: cover;
+    animation: scrollBackground 10s linear infinite;
+}
+
+@keyframes scrollBackground {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 #character {
     position: absolute;
-    left: 5%;
-    top: 5%;
-    width: 5vw; /* Responsive width relative to viewport */
+    width: 5%; /* Set character width proportional to container width */
     height: auto;
+    left: 50px;
+    top: 50px;
 }
 
 .collision-object {
     position: absolute;
-    background: rgba(255, 0, 0, 0.5);
+    background-color: rgba(255, 0, 0, 0.5); /* Make it semi-transparent red for visibility */
 }
 
 #mobile-controls {
     position: absolute;
     bottom: 10%;
     left: 50%;
-    transform: translate(-50%, 10%);
-    width: 240px;
-    height: 240px;
-    display: grid;
-    grid-template-areas:
-        ". up ."
-        "left . right"
-        ". down .";
-    grid-gap: 10px;
+    transform: translateX(-50%);
+    display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-    padding: 20px;
+    gap: 10px;
 }
 
 .control-button {
-    width: 60px;
-    height: 60px;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    text-align: center;
-    line-height: 60px;
-    font-size: 20px;
+    font-size: 24px;
+    border: none;
     border-radius: 50%;
+    padding: 20px;
+    text-align: center;
     user-select: none;
     cursor: pointer;
-}
-
-.control-button:active {
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-#up-button {
-    grid-area: up;
-}
-
-#left-button {
-    grid-area: left;
-}
-
-#down-button {
-    grid-area: down;
-}
-
-#right-button {
-    grid-area: right;
 }
