@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const background = document.getElementById('background');
     const character = document.getElementById('character');
     let bgPosition = 0;
-    let gravity = 0.5;
+    let gravity = 0.25; // Reduced gravity to half the speed
     let velocity = 0;
     let isJumping = false;
 
@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function moveCharacter(event) {
         const step = 10;
         let left = parseInt(window.getComputedStyle(character).left);
+        let top = parseInt(window.getComputedStyle(character).top);
 
         switch (event.key) {
             case 'ArrowUp':
@@ -28,6 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     velocity = -10;
                     isJumping = true;
                 }
+                break;
+            case 'ArrowDown':
+                character.style.top = top + step + 'px';
                 break;
             case 'ArrowLeft':
                 character.style.left = left - step + 'px';
@@ -44,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         velocity += gravity;
         charTop += velocity;
-        
+
         let onSurface = false;
         for (let obj of collisionObjects) {
             if (charLeft + character.offsetWidth > obj.x && charLeft < obj.x + obj.width && charTop + character.offsetHeight >= obj.y && charTop + character.offsetHeight <= obj.y + obj.height) {
