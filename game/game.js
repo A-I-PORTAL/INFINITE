@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.width = `${gameWidth * 0.067}px`; // Adjusted to match visible width
-            objElement.style.height = `${gameHeight * 0.016}px`;
+            objElement.style.width = `${obj.width}px`; // Synchronize width
+            objElement.style.height = `${obj.height}px`;
         });
     }
 
@@ -143,9 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    window.addEventListener('keydown', moveCharacter);
     window.addEventListener('resize', resizeGame);
-
-    document.addEventListener('keydown', moveCharacter);
 
     document.getElementById('up-button').addEventListener('touchstart', mobileControl);
     document.getElementById('left-button').addEventListener('touchstart', mobileControl);
