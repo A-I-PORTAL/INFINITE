@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let scrollSpeed = 2;
 
     const collisionObjects = [
-        { x: 100, y: 450, width: 200, height: 10 }, // Adjusted width
+        { x: 100, y: 450, width: 200, height: 10 },
         { x: 300, y: 400, width: 200, height: 10 },
         { x: 600, y: 350, width: 200, height: 10 },
         { x: 900, y: 300, width: 200, height: 10 },
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.width = `${obj.width}px`; // Synchronize width
+            objElement.style.width = `${obj.width}px`; // Match with collision object width
             objElement.style.height = `${obj.height}px`;
         });
     }
@@ -133,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function mobileControl(event) {
         const control = event.target.id.replace('-button', '');
         const eventKey = `Arrow${control.charAt(0).toUpperCase() + control.slice(1)}`;
-
         moveCharacter({ key: eventKey });
     }
 
@@ -143,8 +142,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    window.addEventListener('keydown', moveCharacter);
     window.addEventListener('resize', resizeGame);
+
+    document.addEventListener('keydown', moveCharacter);
 
     document.getElementById('up-button').addEventListener('touchstart', mobileControl);
     document.getElementById('left-button').addEventListener('touchstart', mobileControl);
