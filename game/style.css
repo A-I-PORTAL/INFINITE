@@ -90,3 +90,30 @@ body, html {
 #right-button {
     grid-area: right;
 }
+
+.control-button {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    margin: 10px;
+    border-radius: 50%;
+    font-size: 24px;
+    user-select: none;
+    cursor: pointer;
+}
+
+#mobile-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    z-index: 10;
+}
+
