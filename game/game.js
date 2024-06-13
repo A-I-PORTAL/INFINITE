@@ -116,13 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const gameWidth = gameContainer.clientWidth;
         const gameHeight = gameContainer.clientHeight;
 
+        // Scale character proportionally to the game container
+        const characterScale = gameWidth / background.clientWidth;
         character.style.width = `${gameWidth * 0.05}px`;
         character.style.height = 'auto';
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.width = `${obj.width}px`; // Match with collision object width
-            objElement.style.height = `${obj.height}px`;
+            objElement.style.width = `${obj.width * characterScale}px`;
+            objElement.style.height = `${obj.height * characterScale}px`;
+            objElement.style.left = `${obj.x * characterScale}px`;
+            objElement.style.top = `${obj.y * characterScale}px`;
         });
 
         // Ensure the game view adjusts correctly for mobile devices
