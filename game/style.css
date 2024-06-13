@@ -27,9 +27,9 @@ body, html {
 
 #character {
     position: absolute;
-    left: 50px;
-    top: 50px;
-    width: 50px;
+    left: 5%;
+    top: 5%;
+    width: 5vw; /* Responsive width relative to viewport */
     height: auto;
 }
 
@@ -85,7 +85,6 @@ body, html {
 
 #down-button {
     grid-area: down;
-}
 
 #right-button {
     grid-area: right;
