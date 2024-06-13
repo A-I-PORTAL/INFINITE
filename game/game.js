@@ -2,10 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const background = document.getElementById('background');
     const character = document.getElementById('character');
     let bgPosition = 0;
-    let gravity = 0.125; // Further reduce gravity speed
+    let gravity = 0.125;
     let velocity = 0;
     let isJumping = false;
-    let scrollSpeed = 2; // Background scroll speed
+    let scrollSpeed = 2;
 
     const collisionObjects = [
         { x: 100, y: 450, width: 100, height: 10 },
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             obj.x -= scrollSpeed;
 
             if (obj.x + obj.width < 0) {
-                obj.x += 3000; // Reset position to the right after it goes off screen to the left
+                obj.x += 3000;
             }
 
             const objElement = document.getElementById(`collision-object-${index}`);
@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
         }
 
-        // Prevent character from scrolling off-screen horizontally
         if (left < 0) {
             character.style.left = '0px';
         } else if (left + character.offsetWidth > window.innerWidth) {
@@ -92,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Check if the character falls off the screen
         if (charTop + character.offsetHeight > window.innerHeight && !onSurface) {
             charTop = 0;
             velocity = 0;
@@ -108,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const gameWidth = gameContainer.clientWidth;
         const gameHeight = gameContainer.clientHeight;
 
-        character.style.width = `${gameWidth * 0.05}px`; // Adjust character size proportionally
+        character.style.width = `${gameWidth * 0.05}px`;
         character.style.height = 'auto';
     }
 
@@ -126,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Mobile control event handlers
     function mobileControl(event) {
         const control = event.target.id.replace('-button', '');
         const eventKey = `Arrow${control.charAt(0).toUpperCase() + control.slice(1)}`;
@@ -142,8 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('left-button').addEventListener('touchstart', mobileControl);
     document.getElementById('right-button').addEventListener('touchstart', mobileControl);
 
-    initCollisionObjects(); // Initialize collision objects
-    resizeGame(); // Initial resize
+    initCollisionObjects();
+    resizeGame();
     scrollBackground();
     applyGravity();
 });
