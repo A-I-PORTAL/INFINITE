@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const gameContainer = document.getElementById('game-container');
     const background = document.getElementById('background');
     const character = document.getElementById('character');
     let bgPosition = 0;
@@ -68,8 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (left < 0) {
             character.style.left = '0px';
-        } else if (left + character.offsetWidth > gameContainer.clientWidth) {
-            character.style.left = `${gameContainer.clientWidth - character.offsetWidth}px`;
+        } else if (left + character.offsetWidth > window.innerWidth) {
+            character.style.left = `${window.innerWidth - character.offsetWidth}px`;
         }
     }
 
@@ -107,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (charTop + character.offsetHeight > gameContainer.clientHeight && !onSurface) {
+        if (charTop + character.offsetHeight > window.innerHeight && !onSurface) {
             charTop = 0;
             velocity = 0;
             isJumping = false;
@@ -119,20 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resizeGame() {
+        const gameContainer = document.getElementById('game-container');
         const gameWidth = gameContainer.clientWidth;
         const gameHeight = gameContainer.clientHeight;
 
-        // Scale character proportionally to the game container
-        const characterScale = gameWidth / 800; // Assuming 800 is the reference width
-        character.style.width = `${characterScale * 50}px`; // 50 is the base width of the character
+        character.style.width = `${gameWidth * 0.05}px`;
         character.style.height = 'auto';
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.width = `${obj.width * characterScale}px`;
-            objElement.style.height = `${obj.height * characterScale}px`;
-            objElement.style.left = `${obj.x * characterScale}px`;
-            objElement.style.top = `${obj.y * characterScale}px`;
+            objElement.style.width = `${obj.width}px`; // Match with collision object width
+            objElement.style.height = `${obj.height}px`;
         });
 
         // Ensure the game view adjusts correctly for mobile devices
@@ -140,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initCollisionObjects() {
+        const gameContainer = document.getElementById('game-container');
         collisionObjects.forEach((obj, index) => {
             const div = document.createElement('div');
             div.classList.add('collision-object');
@@ -180,13 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('left-button').addEventListener('touchstart', mobileControl);
     document.getElementById('down-button').addEventListener('touchstart', mobileControl);
     document.getElementById('right-button').addEventListener('touchstart', mobileControl);
-
-    const pauseButton = document.createElement('div');
-    pauseButton.id = 'pause-button';
-    pauseButton.className = 'control-button';
-    pauseButton.innerText = '⏸️';
-    document.getElementById('mobile-controls').appendChild(pauseButton);
-    pauseButton.addEventListener('click', togglePause);
+    document.getElementById('pause-button').addEventListener('touchstart', togglePause);
 
     window.addEventListener('touchstart', preventZoom, { passive: false });
     window.addEventListener('touchmove', preventZoom, { passive: false });
