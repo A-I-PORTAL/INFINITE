@@ -51,7 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let onSurface = false;
         for (let obj of collisionObjects) {
-            if (charLeft + character.offsetWidth > obj.x && charLeft < obj.x + obj.width && charTop + character.offsetHeight >= obj.y && charTop + character.offsetHeight <= obj.y + obj.height) {
+            if (
+                charLeft + character.offsetWidth > obj.x &&
+                charLeft < obj.x + obj.width &&
+                charTop + character.offsetHeight >= obj.y &&
+                charTop + character.offsetHeight <= obj.y + obj.height
+            ) {
                 charTop = obj.y - character.offsetHeight;
                 velocity = 0;
                 isJumping = false;
@@ -75,6 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const gameHeight = gameContainer.clientHeight;
 
         character.style.width = gameWidth * 0.05 + 'px'; // Adjust character size proportionally
+        character.style.height = 'auto';
+    }
+
+    function initCollisionObjects() {
+        const gameContainer = document.getElementById('game-container');
+        collisionObjects.forEach(obj => {
+            const div = document.createElement('div');
+            div.classList.add('collision-object');
+            div.style.left = obj.x + 'px';
+            div.style.top = obj.y + 'px';
+            div.style.width = obj.width + 'px';
+            div.style.height = obj.height + 'px';
+            gameContainer.appendChild(div);
+        });
     }
 
     window.addEventListener('keydown', moveCharacter);
@@ -83,4 +102,5 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBackground();
     applyGravity();
     resizeGame(); // Initial resize
+    initCollisionObjects(); // Initialize collision objects
 });
