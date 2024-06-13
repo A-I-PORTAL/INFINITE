@@ -40,11 +40,11 @@ body, html {
 
 #mobile-controls {
     position: absolute;
-    bottom: 20%;
+    bottom: 10%;
     left: 50%;
     transform: translate(-50%, 0);
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    height: 220px;
     display: grid;
     grid-template-areas:
         ". up ."
