@@ -105,6 +105,10 @@ body, html {
     grid-area: right;
 }
 
+#pause-button {
+
+    grid-area: pause;
+
 .control-button {
     display: inline-block;
     width: 60px;
