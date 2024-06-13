@@ -71,6 +71,20 @@ body, html {
     cursor: pointer;
 }
 
+
+#mobile-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left pause right"
+        ". down .";
+    gap: 10px;
+    z-index: 10;
+
 .control-button:active {
     background-color: rgba(0, 0, 0, 0.7);
 }
@@ -116,4 +130,3 @@ body, html {
     justify-content: center;
     z-index: 10;
 }
-
