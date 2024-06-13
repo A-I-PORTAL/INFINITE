@@ -15,6 +15,8 @@ body, html {
 
 #background {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 3000px; /* Adjust based on your background image */
     height: 100%;
     background: url('assets/background.png') repeat-x;
