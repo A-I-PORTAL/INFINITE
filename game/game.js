@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let isJumping = false;
     let scrollSpeed = 2; // Background scroll speed
 
-    // Increase the number of collision objects to 10
     const collisionObjects = [
         { x: 100, y: 450, width: 100, height: 10 },
         { x: 300, y: 400, width: 100, height: 10 },
@@ -127,8 +126,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Mobile control event handlers
+    function mobileControl(event) {
+        const control = event.target.id.replace('-button', '');
+        const eventKey = `Arrow${control.charAt(0).toUpperCase() + control.slice(1)}`;
+
+        moveCharacter({ key: eventKey });
+    }
+
     window.addEventListener('keydown', moveCharacter);
     window.addEventListener('resize', resizeGame);
+
+    document.getElementById('up-button').addEventListener('touchstart', mobileControl);
+    document.getElementById('down-button').addEventListener('touchstart', mobileControl);
+    document.getElementById('left-button').addEventListener('touchstart', mobileControl);
+    document.getElementById('right-button').addEventListener('touchstart', mobileControl);
 
     initCollisionObjects(); // Initialize collision objects
     resizeGame(); // Initial resize
