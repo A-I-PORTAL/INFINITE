@@ -8,16 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let scrollSpeed = 2;
 
     const collisionObjects = [
-        { x: 100, y: 450, width: 100, height: 10 },
-        { x: 300, y: 400, width: 100, height: 10 },
-        { x: 600, y: 350, width: 100, height: 10 },
-        { x: 900, y: 300, width: 100, height: 10 },
-        { x: 1200, y: 250, width: 100, height: 10 },
-        { x: 1500, y: 450, width: 100, height: 10 },
-        { x: 1800, y: 400, width: 100, height: 10 },
-        { x: 2100, y: 350, width: 100, height: 10 },
-        { x: 2400, y: 300, width: 100, height: 10 },
-        { x: 2700, y: 250, width: 100, height: 10 },
+        { x: 100, y: 450, width: 200, height: 10 },
+        { x: 300, y: 400, width: 200, height: 10 },
+        { x: 600, y: 350, width: 200, height: 10 },
+        { x: 900, y: 300, width: 200, height: 10 },
+        { x: 1200, y: 250, width: 200, height: 10 },
+        { x: 1500, y: 450, width: 200, height: 10 },
+        { x: 1800, y: 400, width: 200, height: 10 },
+        { x: 2100, y: 350, width: 200, height: 10 },
+        { x: 2400, y: 300, width: 200, height: 10 },
+        { x: 2700, y: 250, width: 200, height: 10 },
     ];
 
     function scrollBackground() {
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.width = `${gameWidth * 0.033}px`;
+            objElement.style.width = `${gameWidth * 0.067}px`; // Twice the previous width
             objElement.style.height = `${gameHeight * 0.016}px`;
         });
     }
@@ -151,8 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('left-button').addEventListener('touchstart', mobileControl);
     document.getElementById('right-button').addEventListener('touchstart', mobileControl);
 
-    document.addEventListener('touchstart', preventZoom, { passive: false });
-    document.addEventListener('touchmove', preventZoom, { passive: false });
+    window.addEventListener('touchstart', preventZoom, { passive: false });
+    window.addEventListener('touchmove', preventZoom, { passive: false });
 
     initCollisionObjects();
     resizeGame();
