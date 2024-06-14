@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.left = `${obj.x}px`;
+            objElement.style.left = `${(obj.x / 800) * 100}vw`;
         });
 
         requestAnimationFrame(scrollBackground);
@@ -130,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.width = `${obj.width}px`; // Match with collision object width
-            objElement.style.height = `${obj.height}px`;
+            objElement.style.width = `${(obj.width / 800) * 100}vw`; // Match with collision object width
+            objElement.style.height = `${(obj.height / 800) * 100}vh`;
          });
 
         // Ensure the game view adjusts correctly for mobile devices
@@ -144,10 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.classList.add('collision-object');
             div.id = `collision-object-${index}`;
-            div.style.left = `${obj.x}px`;
-            div.style.top = `${obj.y}px`;
-            div.style.width = `${obj.width}px`;
-            div.style.height = `${obj.height}px`;
+            div.style.left = `${(obj.x / 800) * 100}vw`;
+            div.style.top = `${(obj.y / 800) * 100}vh`;
+            div.style.width = `${(obj.width / 800) * 100}vw`;
+            div.style.height = `${(obj.height / 800) * 100}vh`;
             gameContainer.appendChild(div);
         });
     }
