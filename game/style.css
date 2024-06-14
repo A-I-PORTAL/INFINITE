@@ -83,14 +83,14 @@ body, html {
     grid-area: left;
 }
 
+#pause-button {
+    grid-area: pause;
+}
+
 #down-button {
     grid-area: down;
 }
 
 #right-button {
     grid-area: right;
-}
-
-#pause-button {
-    grid-area: pause;
 }
