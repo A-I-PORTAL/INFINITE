@@ -224,6 +224,27 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollSpeed = parseInt(event.target.value);
     });
 
+    // Character button event listener
+    characterButton.addEventListener('click', () => {
+        currentCharacterIndex = (currentCharacterIndex + 1) % characterImages.length;
+        character.src = characterImages[currentCharacterIndex];
+        characterIcon.src = characterImages[currentCharacterIndex];
+    });
+
+    // Load character images
+    function loadCharacterImages() {
+        const imagePaths = [
+            'assets/character1.png',
+            'assets/character2.png',
+            'assets/character3.png',
+        ];
+        imagePaths.forEach(path => {
+            const img = new Image();
+            img.src = path;
+            characterImages.push(img.src);
+        });
+    }
+
     initCollisionObjects();
     resizeGame();
     scrollBackground();
