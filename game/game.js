@@ -119,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function resizeGame() {
-        const gameContainer = document.getElementById('game-container');
         const gameWidth = gameContainer.clientWidth;
         const gameHeight = gameContainer.clientHeight;
 
@@ -130,7 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.width = `${(obj.width / 800) * 100}vw`; // Match with collision object width
+            objElement.style.left = `${(obj.x / 800) * 100}vw`;
+            objElement.style.top = `${(obj.y / 800) * 100}vh`;
+            objElement.style.width = `${(obj.width / 800) * 100}vw`;
             objElement.style.height = `${(obj.height / 800) * 100}vh`;
          });
 
