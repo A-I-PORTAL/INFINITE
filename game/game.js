@@ -133,10 +133,30 @@ document.addEventListener('DOMContentLoaded', () => {
             objElement.style.top = `${(obj.y / 800) * 100}vh`;
             objElement.style.width = `${(obj.width / 800) * 100}vw`;
             objElement.style.height = `${(obj.height / 800) * 100}vh`;
-         });
+        });
 
         // Ensure the game view adjusts correctly for mobile devices
         background.style.height = `${gameHeight}px`;
+
+        // Adjust gamepad size and position for both portrait and landscape modes
+        const mobileControls = document.getElementById('mobile-controls');
+        if (window.innerHeight > window.innerWidth) { // Portrait mode
+            mobileControls.style.width = '30vw';
+            mobileControls.style.height = '30vw';
+            mobileControls.style.gridTemplateAreas = `
+                ". up ."
+                "left pause right"
+                ". down ."
+            `;
+        } else { // Landscape mode
+            mobileControls.style.width = '30vh';
+            mobileControls.style.height = '30vh';
+            mobileControls.style.gridTemplateAreas = `
+                ". up ."
+                "left pause right"
+                ". down ."
+            `;
+        }
     }
 
     function initCollisionObjects() {
