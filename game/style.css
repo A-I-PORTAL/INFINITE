@@ -12,7 +12,7 @@ body, html {
 
 #game-container {
     position: relative;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     overflow: hidden;
 }
@@ -21,7 +21,7 @@ body, html {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 3000px; /* Set this to match the background image size */
     height: 100%;
     background: url('assets/background.jpg') repeat-x;
     background-size: cover;
@@ -29,9 +29,9 @@ body, html {
 
 #character {
     position: absolute;
-    left: 6.25vw; /* 50px / 800px * 100 */
-    top: 6.25vh;  /* Adjust based on your game design */
-    width: 6.25vw; /* 50px / 800px * 100 */
+    left: 50px; /* Initial position in pixels */
+    top: 50px;  /* Initial position in pixels */
+    width: 50px;
     height: auto;
 }
 
@@ -45,29 +45,29 @@ body, html {
     bottom: 10%;
     left: 50%;
     transform: translate(-50%, 0);
-    width: 30vw; /* Consistent size */
-    height: 30vw; /* Consistent size */
+    width: 240px; /* Fixed size */
+    height: 240px; /* Fixed size */
     display: grid;
     grid-template-areas:
         ". up ."
         "left pause right"
         ". down .";
-    grid-gap: 5%;
+    grid-gap: 10px;
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.3);
-    border-radius: 5vw;
-    padding: 5%;
+    border-radius: 20px;
+    padding: 20px;
 }
 
 .control-button {
-    width: 8vw; /* Adjust based on your design */
-    height: 8vw; /* Adjust based on your design */
+    width: 60px;
+    height: 60px;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     text-align: center;
-    line-height: 8vw; /* Adjust based on your design */
-    font-size: 2.5vw; /* Adjust based on your design */
+    line-height: 60px;
+    font-size: 20px;
     border-radius: 50%;
     user-select: none;
     cursor: pointer;
