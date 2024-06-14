@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const characterIcon = document.getElementById('character-icon');
     const backgroundButton = document.getElementById('background-button');
     const backgroundIcon = document.getElementById('background-icon');
+    const musicButton = document.getElementById('music-button');
+    const musicIcon = document.getElementById('music-icon');
 
     let bgPosition = 0;
     let gravity = 0.125;
@@ -25,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
+
+    const musicTracks = [];
+    let currentMusicIndex = 1;
+    let musicPlayer = new Audio();
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -234,6 +240,19 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    function loadMusicTracks() {
+        let i = 1;
+        let audio = new Audio();
+        audio.src = `assets/music${i}.mp3`;
+        audio.oncanplaythrough = function () {
+            while (this.readyState >= 2) {
+                musicTracks.push(this.src);
+                i++;
+                this.src = `assets/music${i}.mp3`;
+            }
+        };
+    }
+
     function changeCharacter() {
         currentCharacterIndex = (currentCharacterIndex % characterImages.length) + 1;
         characterIcon.src = `assets/character${currentCharacterIndex}.png`;
@@ -246,19 +265,22 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
-    window.addEventListener('resize', resizeGame);
+    function changeMusic() {
+        currentMusicIndex = (currentMusicIndex % musicTracks.length) + 1;
+        musicPlayer.src = `assets/music${currentMusicIndex}.mp3`;
+        musicPlayer.play();
+    }
 
-    document.addEventListener('keydown', moveCharacter);
-
-    document.querySelectorAll('.control-button').forEach(button => {
-        button.addEventListener('touchstart', mobileControl);
-        button.addEventListener('mousedown', mobileControl);
+    musicPlayer.addEventListener('ended', () => {
+        musicPlayer.play();
     });
 
+    document.addEventListener('keydown', moveCharacter);
     document.addEventListener('touchstart', preventZoom, { passive: false });
 
     characterButton.addEventListener('click', changeCharacter);
     backgroundButton.addEventListener('click', changeBackground);
+    musicButton.addEventListener('click', changeMusic);
     document.getElementById('pause-button').addEventListener('click', togglePause);
 
     speedSlider.addEventListener('input', () => {
@@ -267,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadCharacterImages();
     loadBackgroundImages();
+    loadMusicTracks();
     initCollisionObjects();
     resizeGame();
     scrollBackground();
