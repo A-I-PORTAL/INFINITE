@@ -130,33 +130,18 @@ document.addEventListener('DOMContentLoaded', () => {
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
             objElement.style.left = `${(obj.x / 800) * 100}vw`;
-            objElement.style.top = `${(obj.y / 800) * 100}vh`;
+            objElement.style.top = `${(obj.y / 600) * 100}vh`; // Adjust based on your game design
             objElement.style.width = `${(obj.width / 800) * 100}vw`;
-            objElement.style.height = `${(obj.height / 800) * 100}vh`;
+            objElement.style.height = `${(obj.height / 600) * 100}vh`; // Adjust based on your game design
         });
 
         // Ensure the game view adjusts correctly for mobile devices
         background.style.height = `${gameHeight}px`;
 
-        // Adjust gamepad size and position for both portrait and landscape modes
+        // Adjust gamepad size and position
         const mobileControls = document.getElementById('mobile-controls');
-        if (window.innerHeight > window.innerWidth) { // Portrait mode
-            mobileControls.style.width = '30vw';
-            mobileControls.style.height = '30vw';
-            mobileControls.style.gridTemplateAreas = `
-                ". up ."
-                "left pause right"
-                ". down ."
-            `;
-        } else { // Landscape mode
-            mobileControls.style.width = '30vh';
-            mobileControls.style.height = '30vh';
-            mobileControls.style.gridTemplateAreas = `
-                ". up ."
-                "left pause right"
-                ". down ."
-            `;
-        }
+        mobileControls.style.width = '30vw';
+        mobileControls.style.height = '30vw';
     }
 
     function initCollisionObjects() {
@@ -166,9 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
             div.classList.add('collision-object');
             div.id = `collision-object-${index}`;
             div.style.left = `${(obj.x / 800) * 100}vw`;
-            div.style.top = `${(obj.y / 800) * 100}vh`;
+            div.style.top = `${(obj.y / 600) * 100}vh`; // Adjust based on your game design
             div.style.width = `${(obj.width / 800) * 100}vw`;
-            div.style.height = `${(obj.height / 800) * 100}vh`;
+            div.style.height = `${(obj.height / 600) * 100}vh`; // Adjust based on your game design
             gameContainer.appendChild(div);
         });
     }
