@@ -12,7 +12,7 @@ body, html {
 
 #game-container {
     position: relative;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     overflow: hidden;
 }
@@ -24,7 +24,7 @@ body, html {
     width: 100%;
     height: 100%;
     background: url('assets/background.jpg') repeat-x;
-    background-size: contain;
+    background-size: cover;
 }
 
 #character {
@@ -42,9 +42,9 @@ body, html {
 
 #mobile-controls {
     position: absolute;
-    bottom: 10%;
+    bottom: 5%;
     left: 50%;
-    transform: translate(-50%, 10%);
+    transform: translate(-50%, 0);
     width: 30vw; /* Adjust based on your design */
     height: 30vw; /* Adjust based on your design */
     display: grid;
@@ -52,21 +52,21 @@ body, html {
         ". up ."
         "left pause right"
         ". down .";
-    grid-gap: 2.5vw; /* Adjust based on your design */
+    grid-gap: 5%;
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 5vw; /* Adjust based on your design */
-    padding: 5vw; /* Adjust based on your design */
+    padding: 5%;
 }
 
 .control-button {
-    width: 7.5vw; /* Adjust based on your design */
-    height: 7.5vw; /* Adjust based on your design */
+    width: 8vw; /* Adjust based on your design */
+    height: 8vw; /* Adjust based on your design */
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     text-align: center;
-    line-height: 7.5vw; /* Adjust based on your design */
+    line-height: 8vw; /* Adjust based on your design */
     font-size: 2.5vw; /* Adjust based on your design */
     border-radius: 50%;
     user-select: none;
