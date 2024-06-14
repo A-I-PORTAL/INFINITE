@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameContainer = document.getElementById('game-container');
     const background = document.getElementById('background');
     const character = document.getElementById('character');
-    const currentScoreDisplay = document.getElementById('current-score'); // Added for score display
-    const topScoreDisplay = document.getElementById('top-score'); // Added for top score display
-    const speedSlider = document.getElementById('speed-slider'); // Added for speed slider
-    const characterButton = document.getElementById('character-button'); // Added for character change button
-    const characterIcon = document.getElementById('character-icon'); // Added for character icon
+    const currentScoreDisplay = document.getElementById('current-score');
+    const topScoreDisplay = document.getElementById('top-score');
+    const speedSlider = document.getElementById('speed-slider');
+    const characterButton = document.getElementById('character-button');
+    const characterIcon = document.getElementById('character-icon');
 
     let bgPosition = 0;
     let gravity = 0.125;
@@ -14,31 +14,29 @@ document.addEventListener('DOMContentLoaded', () => {
     let isJumping = false;
     let scrollSpeed = 2;
     let isPaused = false;
-    let currentScore = 0; // Added for current score
-    let topScore = 0; // Added for top score
-    let landedPlatforms = new Set(); // Added to track landed platforms
+    let currentScore = 0;
+    let topScore = 0;
+    let landedPlatforms = new Set();
 
-    const characterImages = []; // Added for character images
-    let currentCharacterIndex = 0; // Added for current character index
+    const characterImages = [];
+    let currentCharacterIndex = 0;
 
-    // Load character images
     function loadCharacterImages() {
-        const numCharacters = 3; // Number of characters to cycle through
+        const numCharacters = 3;
         for (let i = 1; i <= numCharacters; i++) {
             characterImages.push(`assets/character${i}.png`);
         }
     }
 
-    loadCharacterImages(); // Load character images
+    loadCharacterImages();
 
-    // Change character
     function changeCharacter() {
         currentCharacterIndex = (currentCharacterIndex + 1) % characterImages.length;
         character.src = characterImages[currentCharacterIndex];
         characterIcon.src = characterImages[currentCharacterIndex];
     }
 
-    characterButton.addEventListener('click', changeCharacter); // Added event listener for character change
+    characterButton.addEventListener('click', changeCharacter);
 
     function updateScore() {
         currentScoreDisplay.textContent = currentScore;
@@ -54,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
             obj.x -= scrollSpeed;
 
             if (obj.x + obj.width < 0) {
-                obj.x += 3000; // Reset position to the right after it goes off screen to the left
-                landedPlatforms.delete(index); // Reset platform landing state when it goes off-screen
+                obj.x += 3000;
+                landedPlatforms.delete(index);
             }
 
             const objElement = document.getElementById(`collision-object-${index}`);
@@ -119,11 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     velocity = 0;
                     isJumping = false;
 
-                    if (!landedPlatforms.has(index)) { // Check if this platform was landed on before
+                    if (!landedPlatforms.has(index)) {
                         currentScore++;
                         if (currentScore > topScore) topScore = currentScore;
                         updateScore();
-                        landedPlatforms.add(index); // Mark this platform as landed
+                        landedPlatforms.add(index);
                     }
                 } else if (charTop - velocity >= obj.y + obj.height) {
                     charTop = obj.y + obj.height;
@@ -142,8 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
             charTop = 0;
             velocity = 0;
             isJumping = false;
-            currentScore = 0; // Reset current score on death
-            landedPlatforms.clear(); // Clear landed platforms
+            currentScore = 0;
+            landedPlatforms.clear();
             updateScore();
         }
 
@@ -156,9 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const gameWidth = gameContainer.clientWidth;
         const gameHeight = gameContainer.clientHeight;
 
-        // Scale character proportionally to the game container
-        const characterScale = gameWidth / 800; // Assuming 800 is the reference width
-        character.style.width = `${characterScale * 50}px`; // 50 is the base width of the character
+        const characterScale = gameWidth / 800;
+        character.style.width = `${characterScale * 50}px`;
         character.style.height = 'auto';
 
         collisionObjects.forEach((obj, index) => {
@@ -169,10 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
             objElement.style.height = `${obj.height}px`;
         });
 
-        // Ensure the game view adjusts correctly for mobile devices
         background.style.height = `${gameHeight}px`;
 
-        // Ensure the gamepad retains its size
         const mobileControls = document.getElementById('mobile-controls');
         mobileControls.style.width = '240px';
         mobileControls.style.height = '240px';
@@ -216,10 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', moveCharacter);
 
-    // Add event listeners for multiple input methods on gamepad buttons
     document.querySelectorAll('.control-button').forEach(button => {
-        button.addEventListener('touchstart', mobileControl);  // For touch input
-        button.addEventListener('mousedown', mobileControl);  // For mouse click
+        button.addEventListener('touchstart', mobileControl);
+        button.addEventListener('mousedown', mobileControl);
     });
 
     const pauseButton = document.createElement('div');
@@ -232,9 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('touchstart', preventZoom, { passive: false });
     window.addEventListener('touchmove', preventZoom, { passive: false });
 
-    // Event listener for speed slider input
     speedSlider.addEventListener('input', (event) => {
-        scrollSpeed = parseInt(event.target.value); // Adjust scroll speed based on slider value
+        scrollSpeed = parseInt(event.target.value);
     });
 
     initCollisionObjects();
@@ -242,5 +235,5 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBackground();
     applyGravity();
 
-    updateScore(); // Initialize score display
+    updateScore();
 });
