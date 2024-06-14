@@ -21,22 +21,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const characterImages = [];
     let currentCharacterIndex = 0;
 
-    function loadCharacterImages() {
-        const numCharacters = 3;
-        for (let i = 1; i <= numCharacters; i++) {
-            characterImages.push(`assets/character${i}.png`);
-        }
-    }
-
-    loadCharacterImages();
-
-    function changeCharacter() {
-        currentCharacterIndex = (currentCharacterIndex + 1) % characterImages.length;
-        character.src = characterImages[currentCharacterIndex];
-        characterIcon.src = characterImages[currentCharacterIndex];
-    }
-
-    characterButton.addEventListener('click', changeCharacter);
+    const collisionObjects = [
+        { x: 100, y: 450, width: 200, height: 10 },
+        { x: 300, y: 400, width: 200, height: 10 },
+        { x: 600, y: 350, width: 200, height: 10 },
+        { x: 900, y: 300, width: 200, height: 10 },
+        { x: 1200, y: 250, width: 200, height: 10 },
+        { x: 1500, y: 450, width: 200, height: 10 },
+        { x: 1800, y: 400, width: 200, height: 10 },
+        { x: 2100, y: 350, width: 200, height: 10 },
+        { x: 2400, y: 300, width: 200, height: 10 },
+        { x: 2700, y: 250, width: 200, height: 10 },
+    ];
 
     function updateScore() {
         currentScoreDisplay.textContent = currentScore;
@@ -50,12 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         collisionObjects.forEach((obj, index) => {
             obj.x -= scrollSpeed;
-
             if (obj.x + obj.width < 0) {
                 obj.x += 3000;
                 landedPlatforms.delete(index);
             }
-
             const objElement = document.getElementById(`collision-object-${index}`);
             objElement.style.left = `${obj.x}px`;
         });
@@ -236,4 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
     applyGravity();
 
     updateScore();
+
+    loadCharacterImages(); // Ensure character images are loaded
 });
