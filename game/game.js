@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const speedSlider = document.getElementById('speed-slider');
     const characterButton = document.getElementById('character-button');
     const characterIcon = document.getElementById('character-icon');
+    const backgroundButton = document.getElementById('background-button');
+    const backgroundIcon = document.getElementById('background-icon');
 
     let bgPosition = 0;
     let gravity = 0.125;
@@ -19,7 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let landedPlatforms = new Set();
 
     const characterImages = [];
+    const backgroundImages = [];
     let currentCharacterIndex = 0;
+    let currentBackgroundIndex = 0;
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -159,98 +163,82 @@ document.addEventListener('DOMContentLoaded', () => {
             objElement.style.width = `${obj.width}px`;
             objElement.style.height = `${obj.height}px`;
         });
-
-        background.style.height = `${gameHeight}px`;
-
-        const mobileControls = document.getElementById('mobile-controls');
-        mobileControls.style.width = '240px';
-        mobileControls.style.height = '240px';
     }
 
     function initCollisionObjects() {
-        const gameContainer = document.getElementById('game-container');
         collisionObjects.forEach((obj, index) => {
-            const div = document.createElement('div');
-            div.classList.add('collision-object');
-            div.id = `collision-object-${index}`;
-            div.style.left = `${obj.x}px`;
-            div.style.top = `${obj.y}px`;
-            div.style.width = `${obj.width}px`;
-            div.style.height = `${obj.height}px`;
-            gameContainer.appendChild(div);
+            const objElement = document.createElement('div');
+            objElement.className = 'collision-object';
+            objElement.id = `collision-object-${index}`;
+            objElement.style.left = `${obj.x}px`;
+            objElement.style.top = `${obj.y}px`;
+            objElement.style.width = `${obj.width}px`;
+            objElement.style.height = `${obj.height}px`;
+            gameContainer.appendChild(objElement);
         });
     }
 
-    function mobileControl(event) {
-        const control = event.target.id.replace('-button', '');
-        const eventKey = `Arrow${control.charAt(0).toUpperCase() + control.slice(1)}`;
-        moveCharacter({ key: eventKey });
-    }
-
-    function preventZoom(event) {
-        if (event.touches.length > 1) {
-            event.preventDefault();
+    function loadCharacterImages() {
+        let index = 1;
+        while (true) {
+            const imgPath = `assets/character${index}.png`;
+            const img = new Image();
+            img.src = imgPath;
+            if (img.complete) {
+                characterImages.push(imgPath);
+            } else {
+                break;
+            }
+            index++;
         }
     }
 
-    function togglePause() {
-        isPaused = !isPaused;
-        if (!isPaused) {
-            scrollBackground();
-            applyGravity();
+    function loadBackgroundImages() {
+        let index = 1;
+        while (true) {
+            const imgPath = `assets/background${index}.jpg`;
+            const img = new Image();
+            img.src = imgPath;
+            if (img.complete) {
+                backgroundImages.push(imgPath);
+            } else {
+                break;
+            }
+            index++;
         }
     }
 
-    window.addEventListener('resize', resizeGame);
+    function changeCharacter() {
+        currentCharacterIndex = (currentCharacterIndex + 1) % characterImages.length;
+        const newCharacter = characterImages[currentCharacterIndex];
+        character.src = newCharacter;
+        characterIcon.src = newCharacter;
+    }
+
+    function changeBackground() {
+        currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
+        const newBackground = backgroundImages[currentBackgroundIndex];
+        background.style.backgroundImage = `url('${newBackground}')`;
+        backgroundIcon.src = newBackground;
+    }
 
     document.addEventListener('keydown', moveCharacter);
-
-    document.querySelectorAll('.control-button').forEach(button => {
-        button.addEventListener('touchstart', mobileControl);
-        button.addEventListener('mousedown', mobileControl);
+    speedSlider.addEventListener('input', () => {
+        scrollSpeed = parseInt(speedSlider.value, 10);
     });
+    characterButton.addEventListener('click', changeCharacter);
+    backgroundButton.addEventListener('click', changeBackground);
 
-    const pauseButton = document.createElement('div');
-    pauseButton.id = 'pause-button';
-    pauseButton.className = 'control-button';
-    pauseButton.innerText = '⏸️';
-    document.getElementById('mobile-controls').appendChild(pauseButton);
-    pauseButton.addEventListener('click', togglePause);
+    function init() {
+        initCollisionObjects();
+        resizeGame();
+        scrollBackground();
+        applyGravity();
+        updateScore();
 
-    window.addEventListener('touchstart', preventZoom, { passive: false });
-    window.addEventListener('touchmove', preventZoom, { passive: false });
-
-    speedSlider.addEventListener('input', (event) => {
-        scrollSpeed = parseInt(event.target.value);
-    });
-
-    // Character button event listener
-    characterButton.addEventListener('click', () => {
-        currentCharacterIndex = (currentCharacterIndex + 1) % characterImages.length;
-        character.src = characterImages[currentCharacterIndex];
-        characterIcon.src = characterImages[currentCharacterIndex];
-    });
-
-    // Load character images
-    function loadCharacterImages() {
-        const imagePaths = [
-            'assets/character1.png',
-            'assets/character2.png',
-            'assets/character3.png',
-        ];
-        imagePaths.forEach(path => {
-            const img = new Image();
-            img.src = path;
-            characterImages.push(img.src);
-        });
+        loadCharacterImages();
+        loadBackgroundImages();
     }
 
-    initCollisionObjects();
-    resizeGame();
-    scrollBackground();
-    applyGravity();
-
-    updateScore();
-
-    loadCharacterImages(); // Ensure character images are loaded
+    init();
 });
