@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.left = `${(obj.x / 800) * 100}vw`;
+            objElement.style.left = `${obj.x}px`;
         });
 
         requestAnimationFrame(scrollBackground);
@@ -129,19 +129,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.left = `${(obj.x / 800) * 100}vw`;
-            objElement.style.top = `${(obj.y / 600) * 100}vh`; // Adjust based on your game design
-            objElement.style.width = `${(obj.width / 800) * 100}vw`;
-            objElement.style.height = `${(obj.height / 600) * 100}vh`; // Adjust based on your game design
+            objElement.style.left = `${obj.x}px`;
+            objElement.style.top = `${obj.y}px`;
+            objElement.style.width = `${obj.width}px`;
+            objElement.style.height = `${obj.height}px`;
         });
 
         // Ensure the game view adjusts correctly for mobile devices
         background.style.height = `${gameHeight}px`;
 
-        // Adjust gamepad size and position
+        // Ensure the gamepad retains its size
         const mobileControls = document.getElementById('mobile-controls');
-        mobileControls.style.width = '30vw';
-        mobileControls.style.height = '30vw';
+        mobileControls.style.width = '240px';
+        mobileControls.style.height = '240px';
     }
 
     function initCollisionObjects() {
@@ -150,10 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.classList.add('collision-object');
             div.id = `collision-object-${index}`;
-            div.style.left = `${(obj.x / 800) * 100}vw`;
-            div.style.top = `${(obj.y / 600) * 100}vh`; // Adjust based on your game design
-            div.style.width = `${(obj.width / 800) * 100}vw`;
-            div.style.height = `${(obj.height / 600) * 100}vh`; // Adjust based on your game design
+            div.style.left = `${obj.x}px`;
+            div.style.top = `${obj.y}px`;
+            div.style.width = `${obj.width}px`;
+            div.style.height = `${obj.height}px`;
             gameContainer.appendChild(div);
         });
     }
