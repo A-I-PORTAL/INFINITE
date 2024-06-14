@@ -106,7 +106,16 @@ body, html {
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    padding: 10px 20px;
+    border-radius: 20px; /* Match the gamepad design */
     color: white;
     font-size: 20px;
     text-align: center;
+}
+
+#score-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
