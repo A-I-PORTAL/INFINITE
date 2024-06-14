@@ -12,14 +12,14 @@ body, html {
 
 #game-container {
     position: relative;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     overflow: hidden;
 }
 
 #background {
     position: absolute;
-    width: 3000px;
+    width: 3000px; /* Adjust based on your background image size */
     height: 100%;
     background: url('assets/background.jpg') repeat-x;
     background-size: cover;
@@ -27,9 +27,9 @@ body, html {
 
 #character {
     position: absolute;
-    left: 50px;
-    top: 50px;
-    width: 50px;
+    left: 6.25vw; /* 50px / 800px * 100 */
+    top: 6.25vh;  /* Adjust based on your game design */
+    width: 6.25vw; /* 50px / 800px * 100 */
     height: auto;
 }
 
@@ -43,29 +43,29 @@ body, html {
     bottom: 10%;
     left: 50%;
     transform: translate(-50%, 10%);
-    width: 240px;
-    height: 240px;
+    width: 30vw; /* Adjust based on your design */
+    height: 30vw; /* Adjust based on your design */
     display: grid;
     grid-template-areas:
         ". up ."
         "left pause right"
         ". down .";
-    grid-gap: 10px;
+    grid-gap: 2.5vw; /* Adjust based on your design */
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 5vw; /* Adjust based on your design */
+    padding: 5vw; /* Adjust based on your design */
 }
 
 .control-button {
-    width: 60px;
-    height: 60px;
+    width: 7.5vw; /* Adjust based on your design */
+    height: 7.5vw; /* Adjust based on your design */
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     text-align: center;
-    line-height: 60px;
-    font-size: 20px;
+    line-height: 7.5vw; /* Adjust based on your design */
+    font-size: 2.5vw; /* Adjust based on your design */
     border-radius: 50%;
     user-select: none;
     cursor: pointer;
