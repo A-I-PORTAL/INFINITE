@@ -42,11 +42,11 @@ body, html {
 
 #mobile-controls {
     position: absolute;
-    bottom: 5%;
+    bottom: 10%;
     left: 50%;
     transform: translate(-50%, 0);
-    width: 30vw; /* Adjust based on your design */
-    height: 30vw; /* Adjust based on your design */
+    width: 30vw; /* Consistent size */
+    height: 30vw; /* Consistent size */
     display: grid;
     grid-template-areas:
         ". up ."
@@ -56,7 +56,7 @@ body, html {
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.3);
-    border-radius: 5vw; /* Adjust based on your design */
+    border-radius: 5vw;
     padding: 5%;
 }
 
