@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentScoreDisplay = document.getElementById('current-score'); // Added for score display
     const topScoreDisplay = document.getElementById('top-score'); // Added for top score display
     const speedSlider = document.getElementById('speed-slider'); // Added for speed slider
+    const characterButton = document.getElementById('character-button'); // Added for character change button
+    const characterIcon = document.getElementById('character-icon'); // Added for character icon
 
     let bgPosition = 0;
     let gravity = 0.125;
@@ -16,18 +18,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let topScore = 0; // Added for top score
     let landedPlatforms = new Set(); // Added to track landed platforms
 
-    const collisionObjects = [
-        { x: 100, y: 450, width: 200, height: 10 },
-        { x: 300, y: 400, width: 200, height: 10 },
-        { x: 600, y: 350, width: 200, height: 10 },
-        { x: 900, y: 300, width: 200, height: 10 },
-        { x: 1200, y: 250, width: 200, height: 10 },
-        { x: 1500, y: 450, width: 200, height: 10 },
-        { x: 1800, y: 400, width: 200, height: 10 },
-        { x: 2100, y: 350, width: 200, height: 10 },
-        { x: 2400, y: 300, width: 200, height: 10 },
-        { x: 2700, y: 250, width: 200, height: 10 },
-    ];
+    const characterImages = []; // Added for character images
+    let currentCharacterIndex = 0; // Added for current character index
+
+    // Load character images
+    function loadCharacterImages() {
+        const numCharacters = 3; // Number of characters to cycle through
+        for (let i = 1; i <= numCharacters; i++) {
+            characterImages.push(`assets/character${i}.png`);
+        }
+    }
+
+    loadCharacterImages(); // Load character images
+
+    // Change character
+    function changeCharacter() {
+        currentCharacterIndex = (currentCharacterIndex + 1) % characterImages.length;
+        character.src = characterImages[currentCharacterIndex];
+        characterIcon.src = characterImages[currentCharacterIndex];
+    }
+
+    characterButton.addEventListener('click', changeCharacter); // Added event listener for character change
 
     function updateScore() {
         currentScoreDisplay.textContent = currentScore;
