@@ -99,3 +99,14 @@ body, html {
 #right-button {
     grid-area: right;
 }
+
+/* Scoreboard styles */
+#scoreboard {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
