@@ -2,12 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameContainer = document.getElementById('game-container');
     const background = document.getElementById('background');
     const character = document.getElementById('character');
+    const currentScoreDisplay = document.getElementById('current-score'); // Added for score display
+    const topScoreDisplay = document.getElementById('top-score'); // Added for top score display
+
     let bgPosition = 0;
     let gravity = 0.125;
     let velocity = 0;
     let isJumping = false;
     let scrollSpeed = 2;
     let isPaused = false;
+    let currentScore = 0; // Added for current score
+    let topScore = 0; // Added for top score
+    let landedPlatforms = new Set(); // Added to track landed platforms
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -22,6 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
         { x: 2700, y: 250, width: 200, height: 10 },
     ];
 
+    function updateScore() {
+        currentScoreDisplay.textContent = currentScore;
+        topScoreDisplay.textContent = topScore;
+    }
+
     function scrollBackground() {
         if (isPaused) return;
         bgPosition -= scrollSpeed;
@@ -32,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (obj.x + obj.width < 0) {
                 obj.x += 3000; // Reset position to the right after it goes off screen to the left
+                landedPlatforms.delete(index); // Reset platform landing state when it goes off-screen
             }
 
             const objElement = document.getElementById(`collision-object-${index}`);
@@ -83,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         charTop += velocity;
 
         let onSurface = false;
-        for (let obj of collisionObjects) {
+        for (let [index, obj] of collisionObjects.entries()) {
             if (
                 charLeft + character.offsetWidth > obj.x &&
                 charLeft < obj.x + obj.width &&
@@ -94,6 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     charTop = obj.y - character.offsetHeight;
                     velocity = 0;
                     isJumping = false;
+
+                    if (!landedPlatforms.has(index)) { // Check if this platform was landed on before
+                        currentScore++;
+                        if (currentScore > topScore) topScore = currentScore;
+                        updateScore();
+                        landedPlatforms.add(index); // Mark this platform as landed
+                    }
                 } else if (charTop - velocity >= obj.y + obj.height) {
                     charTop = obj.y + obj.height;
                     velocity = 0;
@@ -111,6 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
             charTop = 0;
             velocity = 0;
             isJumping = false;
+            currentScore = 0; // Reset current score on death
+            landedPlatforms.clear(); // Clear landed platforms
+            updateScore();
         }
 
         character.style.top = `${charTop}px`;
@@ -202,4 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeGame();
     scrollBackground();
     applyGravity();
+
+    updateScore(); // Initialize score display
 });
