@@ -182,10 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', moveCharacter);
 
-    document.getElementById('up-button').addEventListener('touchstart', mobileControl);
-    document.getElementById('left-button').addEventListener('touchstart', mobileControl);
-    document.getElementById('down-button').addEventListener('touchstart', mobileControl);
-    document.getElementById('right-button').addEventListener('touchstart', mobileControl);
+    // Add event listeners for multiple input methods on gamepad buttons
+    document.querySelectorAll('.control-button').forEach(button => {
+        button.addEventListener('touchstart', mobileControl);  // For touch input
+        button.addEventListener('mousedown', mobileControl);  // For mouse click
+    });
 
     const pauseButton = document.createElement('div');
     pauseButton.id = 'pause-button';
