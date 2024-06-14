@@ -48,7 +48,7 @@ body, html {
     display: grid;
     grid-template-areas:
         ". up ."
-        "left . right"
+        "left . pause . right"
         ". down .";
     grid-gap: 10px;
     justify-content: center;
@@ -71,20 +71,6 @@ body, html {
     cursor: pointer;
 }
 
-
-#mobile-controls {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: grid;
-    grid-template-areas:
-        ". up ."
-        "left pause right"
-        ". down .";
-    gap: 10px;
-    z-index: 10;
-
 .control-button:active {
     background-color: rgba(0, 0, 0, 0.7);
 }
@@ -106,31 +92,5 @@ body, html {
 }
 
 #pause-button {
-
     grid-area: pause;
-
-.control-button {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    background-color: #fff;
-    color: #000;
-    text-align: center;
-    margin: 10px;
-    border-radius: 50%;
-    font-size: 24px;
-    user-select: none;
-    cursor: pointer;
-}
-
-#mobile-controls {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    z-index: 10;
 }
