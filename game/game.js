@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const character = document.getElementById('character');
     const currentScoreDisplay = document.getElementById('current-score'); // Added for score display
     const topScoreDisplay = document.getElementById('top-score'); // Added for top score display
+    const speedSlider = document.getElementById('speed-slider'); // Added for speed slider
 
     let bgPosition = 0;
     let gravity = 0.125;
@@ -219,6 +220,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('touchstart', preventZoom, { passive: false });
     window.addEventListener('touchmove', preventZoom, { passive: false });
+
+    // Event listener for speed slider input
+    speedSlider.addEventListener('input', (event) => {
+        scrollSpeed = parseInt(event.target.value); // Adjust scroll speed based on slider value
+    });
 
     initCollisionObjects();
     resizeGame();
