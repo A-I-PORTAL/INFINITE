@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const characterIcon = document.getElementById('character-icon');
     const backgroundButton = document.getElementById('background-button');
     const backgroundIcon = document.getElementById('background-icon');
+    const upButton = document.getElementById('up-button');
+    const downButton = document.getElementById('down-button');
+    const leftButton = document.getElementById('left-button');
+    const rightButton = document.getElementById('right-button');
+    const pauseButton = document.getElementById('pause-button');
 
     let bgPosition = 0;
     let gravity = 0.125;
@@ -93,6 +98,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function handleControl(button) {
+        if (isPaused) return;
+
+        const step = 10;
+        let left = parseInt(window.getComputedStyle(character).left);
+        let top = parseInt(window.getComputedStyle(character).top);
+
+        switch (button.id) {
+            case 'up-button':
+                if (!isJumping) {
+                    velocity = -5;
+                    isJumping = true;
+                }
+                break;
+            case 'down-button':
+                character.style.top = `${top + step}px`;
+                break;
+            case 'left-button':
+                character.style.left = `${left - step}px`;
+                break;
+            case 'right-button':
+                character.style.left = `${left + step}px`;
+                break;
+            case 'pause-button':
+                isPaused = !isPaused;
+                break;
+        }
+
+        if (left < 0) {
+            character.style.left = '0px';
+        } else if (left + character.offsetWidth > gameContainer.clientWidth) {
+            character.style.left = `${gameContainer.clientWidth - character.offsetWidth}px`;
+        }
+    }
+
     function applyGravity() {
         if (isPaused) return;
 
@@ -123,39 +163,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else if (charTop - velocity >= obj.y + obj.height) {
                     charTop = obj.y + obj.height;
-                    velocity = 0;
-                } else if (charLeft + character.offsetWidth - velocity <= obj.x) {
-                    charLeft = obj.x - character.offsetWidth;
-                } else if (charLeft - velocity >= obj.x + obj.width) {
-                    charLeft = obj.x + obj.width;
+                    velocity = 0.5; // small bounce
                 }
+
                 onSurface = true;
-                break;
             }
         }
 
-        if (charTop + character.offsetHeight > gameContainer.clientHeight && !onSurface) {
-            charTop = 0;
+        if (!onSurface) {
+            isJumping = true;
+        }
+
+        if (charTop + character.offsetHeight >= gameContainer.clientHeight) {
+            charTop = gameContainer.clientHeight - character.offsetHeight;
             velocity = 0;
             isJumping = false;
-            currentScore = 0;
-            landedPlatforms.clear();
-            updateScore();
         }
 
         character.style.top = `${charTop}px`;
-        character.style.left = `${charLeft}px`;
         requestAnimationFrame(applyGravity);
     }
 
     function resizeGame() {
-        const gameWidth = gameContainer.clientWidth;
-        const gameHeight = gameContainer.clientHeight;
-
-        const characterScale = gameWidth / 800;
-        character.style.width = `${characterScale * 50}px`;
-        character.style.height = 'auto';
-
         collisionObjects.forEach((obj, index) => {
             const objElement = document.getElementById(`collision-object-${index}`);
             objElement.style.left = `${obj.x}px`;
@@ -179,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadCharacterImages() {
-        let index = 1;
+        let index = 1; // Starting from 1 for both characters and backgrounds
         while (true) {
             const imgPath = `assets/character${index}.png`;
             const img = new Image();
@@ -194,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadBackgroundImages() {
-        let index = 1;
+        let index = 1; // Starting from 1 for both characters and backgrounds
         while (true) {
             const imgPath = `assets/background${index}.jpg`;
             const img = new Image();
@@ -226,8 +255,15 @@ document.addEventListener('DOMContentLoaded', () => {
     speedSlider.addEventListener('input', () => {
         scrollSpeed = parseInt(speedSlider.value, 10);
     });
+
     characterButton.addEventListener('click', changeCharacter);
     backgroundButton.addEventListener('click', changeBackground);
+
+    // Add touch and click event listeners for mobile controls
+    [upButton, downButton, leftButton, rightButton, pauseButton].forEach(button => {
+        button.addEventListener('click', () => handleControl(button));
+        button.addEventListener('touchstart', () => handleControl(button));
+    });
 
     function init() {
         initCollisionObjects();
