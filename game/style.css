@@ -144,3 +144,26 @@ body, html {
 #speed-slider {
     width: 100px;
 }
+
+/* Character Button styles */
+#character-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+#character-button img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
