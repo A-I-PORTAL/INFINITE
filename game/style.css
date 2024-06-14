@@ -119,3 +119,28 @@ body, html {
     justify-content: center;
     align-items: center;
 }
+
+/* Speed Slider styles */
+#speed-container {
+    position: absolute;
+    top: 60px; /* Position it below the scoreboard */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    padding: 10px 20px;
+    border-radius: 20px; /* Match the gamepad design */
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#speed-label {
+    margin-right: 10px;
+}
+
+#speed-slider {
+    width: 100px;
+}
