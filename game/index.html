@@ -9,18 +9,27 @@
 <body>
     <div id="game-container">
         <div id="background"></div>
-        <img id="character" src="assets/character.png" alt="Character">
+        <img id="character" src="assets/character1.png" alt="Character">
         <!-- Character Change Button -->
         <div id="character-button" class="control-button">
-            <img id="character-icon" src="assets/character.png" alt="Character Icon">
+            <img id="character-icon" src="assets/character1.png" alt="Character Icon">
         </div>
         <!-- Background Change Button -->
         <div id="background-button" class="control-button">
-            <img id="background-icon" src="assets/background.jpg" alt="Background Icon">
+            <img id="background-icon" src="assets/background1.jpg" alt="Background Icon">
         </div>
         <!-- Music Change Button -->
         <div id="music-button" class="control-button">
-            <span>🔊</span>
+            <span id="music-icon">🔊</span>
+        </div>
+        <!-- Score Display -->
+        <div id="scoreboard">
+            <div id="score-text">SCORE&nbsp;<span id="current-score">0</span>&nbsp;|&nbsp;TOP&nbsp;<span id="top-score">0</span></div>
+        </div>
+        <!-- Speed Slider -->
+        <div id="speed-container">
+            <label for="speed-slider" id="speed-label">SPEED</label>
+            <input type="range" id="speed-slider" min="1" max="10" value="2">
         </div>
         <!-- Mobile Controls -->
         <div id="mobile-controls">
@@ -28,6 +37,7 @@
             <div id="left-button" class="control-button">←</div>
             <div id="down-button" class="control-button">↓</div>
             <div id="right-button" class="control-button">→</div>
+            <div id="pause-button" class="control-button">⏸️</div>
         </div>
     </div>
     <script src="game.js"></script>
