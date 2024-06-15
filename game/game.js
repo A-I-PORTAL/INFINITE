@@ -6,11 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const topScoreDisplay = document.getElementById('top-score');
     const speedSlider = document.getElementById('speed-slider');
     const characterButton = document.getElementById('character-button');
-    const characterIcon = document.getElementById('character-icon');
     const backgroundButton = document.getElementById('background-button');
-    const backgroundIcon = document.getElementById('background-icon');
     const musicButton = document.getElementById('music-button');
-    const musicIcon = document.getElementById('music-icon');
 
     let bgPosition = 0;
     let gravity = 0.125;
@@ -21,16 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentScore = 0;
     let topScore = 0;
     let landedPlatforms = new Set();
-
-    const characterImages = [];
     let currentCharacterIndex = 1;
-
-    const backgroundImages = [];
     let currentBackgroundIndex = 1;
-
-    const musicTracks = [];
     let currentMusicIndex = 1;
-    let musicPlayer = new Audio();
+    let audio = new Audio(`assets/music${currentMusicIndex}.mp3`);
+    audio.loop = true;
+    audio.play();
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -94,205 +87,100 @@ document.addEventListener('DOMContentLoaded', () => {
                 character.style.left = `${left + step}px`;
                 break;
         }
-
-        if (left < 0) {
-            character.style.left = '0px';
-        } else if (left + character.offsetWidth > gameContainer.clientWidth) {
-            character.style.left = `${gameContainer.clientWidth - character.offsetWidth}px`;
-        }
     }
 
     function applyGravity() {
         if (isPaused) return;
 
-        let charTop = parseInt(window.getComputedStyle(character).top);
-        let charLeft = parseInt(window.getComputedStyle(character).left);
-
+        let top = parseInt(window.getComputedStyle(character).top);
         velocity += gravity;
-        charTop += velocity;
+        top += velocity;
 
-        let onSurface = false;
-        for (let [index, obj] of collisionObjects.entries()) {
-            if (
-                charLeft + character.offsetWidth > obj.x &&
-                charLeft < obj.x + obj.width &&
-                charTop + character.offsetHeight > obj.y &&
-                charTop < obj.y + obj.height
-            ) {
-                if (charTop + character.offsetHeight - velocity <= obj.y) {
-                    charTop = obj.y - character.offsetHeight;
-                    velocity = 0;
-                    isJumping = false;
+        const characterRect = character.getBoundingClientRect();
+        let isOnPlatform = false;
 
-                    if (!landedPlatforms.has(index)) {
-                        currentScore++;
-                        if (currentScore > topScore) topScore = currentScore;
-                        updateScore();
-                        landedPlatforms.add(index);
-                    }
-                } else if (charTop - velocity >= obj.y + obj.height) {
-                    charTop = obj.y + obj.height;
-                    velocity = 0;
-                } else if (charLeft + character.offsetWidth - velocity <= obj.x) {
-                    charLeft = obj.x - character.offsetWidth;
-                } else if (charLeft - velocity >= obj.x + obj.width) {
-                    charLeft = obj.x + obj.width;
+        collisionObjects.forEach((obj, index) => {
+            const platformRect = document.getElementById(`collision-object-${index}`).getBoundingClientRect();
+
+            if (characterRect.left < platformRect.right &&
+                characterRect.right > platformRect.left &&
+                characterRect.bottom < platformRect.bottom + 5 &&
+                characterRect.bottom > platformRect.top) {
+                top = platformRect.top - characterRect.height;
+                velocity = 0;
+                isJumping = false;
+                isOnPlatform = true;
+                landedPlatforms.add(index);
+                currentScore = landedPlatforms.size;
+                if (currentScore > topScore) {
+                    topScore = currentScore;
                 }
-                onSurface = true;
-                break;
+                updateScore();
             }
-        }
+        });
 
-        if (charTop + character.offsetHeight > gameContainer.clientHeight && !onSurface) {
-            charTop = 0;
+        if (top >= window.innerHeight) {
+            top = 0;
             velocity = 0;
-            isJumping = false;
             currentScore = 0;
             landedPlatforms.clear();
             updateScore();
         }
 
-        character.style.top = `${charTop}px`;
-        character.style.left = `${charLeft}px`;
+        character.style.top = `${top}px`;
         requestAnimationFrame(applyGravity);
-    }
-
-    function resizeGame() {
-        const gameWidth = gameContainer.clientWidth;
-        const gameHeight = gameContainer.clientHeight;
-
-        const characterScale = gameWidth / 800;
-        character.style.width = `${characterScale * 50}px`;
-        character.style.height = 'auto';
-
-        collisionObjects.forEach((obj, index) => {
-            const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.left = `${obj.x}px`;
-            objElement.style.top = `${obj.y}px`;
-            objElement.style.width = `${obj.width}px`;
-            objElement.style.height = `${obj.height}px`;
-        });
-
-        background.style.height = `${gameHeight}px`;
-
-        const mobileControls = document.getElementById('mobile-controls');
-        mobileControls.style.width = '240px';
-        mobileControls.style.height = '240px';
-    }
-
-    function initCollisionObjects() {
-        const gameContainer = document.getElementById('game-container');
-        collisionObjects.forEach((obj, index) => {
-            const div = document.createElement('div');
-            div.classList.add('collision-object');
-            div.id = `collision-object-${index}`;
-            div.style.left = `${obj.x}px`;
-            div.style.top = `${obj.y}px`;
-            div.style.width = `${obj.width}px`;
-            div.style.height = `${obj.height}px`;
-            gameContainer.appendChild(div);
-        });
-    }
-
-    function mobileControl(event) {
-        const control = event.target.id.replace('-button', '');
-        const eventKey = `Arrow${control.charAt(0).toUpperCase() + control.slice(1)}`;
-        moveCharacter({ key: eventKey });
-    }
-
-    function preventZoom(event) {
-        if (event.touches.length > 1) {
-            event.preventDefault();
-        }
     }
 
     function togglePause() {
         isPaused = !isPaused;
         if (!isPaused) {
-            scrollBackground();
-            applyGravity();
+            requestAnimationFrame(scrollBackground);
+            requestAnimationFrame(applyGravity);
+            audio.play();
+        } else {
+            audio.pause();
         }
     }
 
-    function loadCharacterImages() {
-        let i = 1;
-        let img = new Image();
-        img.src = `assets/character${i}.png`;
-        img.onload = function () {
-            while (this.complete) {
-                characterImages.push(this.src);
-                i++;
-                this.src = `assets/character${i}.png`;
-            }
-        };
-    }
-
-    function loadBackgroundImages() {
-        let i = 1;
-        let img = new Image();
-        img.src = `assets/background${i}.jpg`;
-        img.onload = function () {
-            while (this.complete) {
-                backgroundImages.push(this.src);
-                i++;
-                this.src = `assets/background${i}.jpg`;
-            }
-        };
-    }
-
-    function loadMusicTracks() {
-        let i = 1;
-        let audio = new Audio();
-        audio.src = `assets/music${i}.mp3`;
-        audio.oncanplaythrough = function () {
-            while (this.readyState >= 2) {
-                musicTracks.push(this.src);
-                i++;
-                this.src = `assets/music${i}.mp3`;
-            }
-        };
-    }
-
     function changeCharacter() {
-        currentCharacterIndex = (currentCharacterIndex % characterImages.length) + 1;
-        characterIcon.src = `assets/character${currentCharacterIndex}.png`;
+        currentCharacterIndex = (currentCharacterIndex % 10) + 1;
         character.src = `assets/character${currentCharacterIndex}.png`;
+        characterButton.querySelector('img').src = `assets/character${currentCharacterIndex}.png`;
     }
 
     function changeBackground() {
-        currentBackgroundIndex = (currentBackgroundIndex % backgroundImages.length) + 1;
-        backgroundIcon.src = `assets/background${currentBackgroundIndex}.jpg`;
+        currentBackgroundIndex = (currentBackgroundIndex % 10) + 1;
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
+        backgroundButton.querySelector('img').src = `assets/background${currentBackgroundIndex}.jpg`;
     }
 
     function changeMusic() {
-        currentMusicIndex = (currentMusicIndex % musicTracks.length) + 1;
-        musicPlayer.src = `assets/music${currentMusicIndex}.mp3`;
-        musicPlayer.play();
+        currentMusicIndex = (currentMusicIndex % 10) + 1;
+        audio.pause();
+        audio = new Audio(`assets/music${currentMusicIndex}.mp3`);
+        audio.loop = true;
+        if (!isPaused) {
+            audio.play();
+        }
     }
 
-    musicPlayer.addEventListener('ended', () => {
-        musicPlayer.play();
-    });
-
     document.addEventListener('keydown', moveCharacter);
-    document.addEventListener('touchstart', preventZoom, { passive: false });
-
+    document.getElementById('pause-button').addEventListener('click', togglePause);
     characterButton.addEventListener('click', changeCharacter);
     backgroundButton.addEventListener('click', changeBackground);
     musicButton.addEventListener('click', changeMusic);
-    document.getElementById('pause-button').addEventListener('click', togglePause);
 
-    speedSlider.addEventListener('input', () => {
-        scrollSpeed = parseInt(speedSlider.value, 10);
+    collisionObjects.forEach((obj, index) => {
+        const objElement = document.createElement('div');
+        objElement.id = `collision-object-${index}`;
+        objElement.className = 'collision-object';
+        objElement.style.left = `${obj.x}px`;
+        objElement.style.top = `${obj.y}px`;
+        objElement.style.width = `${obj.width}px`;
+        objElement.style.height = `${obj.height}px`;
+        gameContainer.appendChild(objElement);
     });
 
-    loadCharacterImages();
-    loadBackgroundImages();
-    loadMusicTracks();
-    initCollisionObjects();
-    resizeGame();
-    scrollBackground();
-    applyGravity();
-    updateScore();
+    requestAnimationFrame(scrollBackground);
+    requestAnimationFrame(applyGravity);
 });
