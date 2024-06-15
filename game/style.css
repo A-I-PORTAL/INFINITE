@@ -21,7 +21,7 @@ body, html {
     position: absolute;
     top: 0;
     left: 0;
-    width: 3000px; /* Set this to match the background image size */
+    width: 3000px;
     height: 100%;
     background: url('assets/background1.jpg') repeat-x;
     background-size: cover;
@@ -29,8 +29,8 @@ body, html {
 
 #character {
     position: absolute;
-    left: 50px; /* Initial position in pixels */
-    top: 50px;  /* Initial position in pixels */
+    left: 50px;
+    top: 50px;
     width: 50px;
     height: auto;
 }
@@ -40,27 +40,45 @@ body, html {
     background: rgba(255, 0, 0, 0.5);
 }
 
-#mobile-controls {
+#scoreboard {
     position: absolute;
-    bottom: 10%;
+    top: 10px;
     left: 50%;
-    transform: translate(-50%, 0);
-    width: 240px; /* Fixed size */
-    height: 240px; /* Fixed size */
-    display: grid;
-    grid-template-areas:
-        ". up ."
-        "left pause right"
-        ". down .";
-    grid-gap: 10px;
-    justify-content: center;
-    align-items: center;
+    transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
     border-radius: 20px;
-    padding: 20px;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+#speed-container {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 20px;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#speed-label {
+    margin-right: 10px;
+}
+
+#speed-slider {
+    width: 100px;
 }
 
 .control-button {
+    position: absolute;
     width: 60px;
     height: 60px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -74,10 +92,42 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 2px solid rgba(0, 0, 0, 0.5);
 }
 
-.control-button:active {
-    background-color: rgba(0, 0, 0, 0.7);
+#character-button {
+    top: 10px;
+    left: 10px;
+}
+
+#background-button {
+    top: 10px;
+    right: 10px;
+}
+
+#music-button {
+    bottom: 10px;
+    left: 10px;
+}
+
+#mobile-controls {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    height: 240px;
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left pause right"
+        ". down .";
+    grid-gap: 10px;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 20px;
 }
 
 #up-button {
@@ -100,115 +150,11 @@ body, html {
     grid-area: right;
 }
 
-/* Scoreboard styles */
-#scoreboard {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
-    padding: 10px 20px;
-    border-radius: 20px; /* Match the gamepad design */
-    color: white;
-    font-size: 20px;
-    text-align: center;
+.control-button:active {
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
-#score-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Speed Slider styles */
-#speed-container {
-    position: absolute;
-    top: 60px; /* Position it below the scoreboard */
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
-    padding: 10px 20px;
-    border-radius: 20px; /* Match the gamepad design */
-    color: white;
-    font-size: 20px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#speed-label {
-    margin-right: 10px;
-}
-
-#speed-slider {
-    width: 100px;
-}
-
-/* Character Button styles */
-#character-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 60px;
-    height: 60px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    border: 2px solid rgba(0, 0, 0, 0.5);
-}
-
-#character-button img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-/* Background Button styles */
-#background-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 60px;
-    height: 60px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    border: 2px solid rgba(0, 0, 0, 0.5);
-}
-
-#background-button img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-/* Music Button styles */
-#music-button {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    width: 60px;
-    height: 60px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    border: 2px solid rgba(0, 0, 0, 0.5);
-}
-
-#music-button img {
+#character-button img, #background-button img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
