@@ -19,11 +19,9 @@ body, html {
 
 #background {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 3000px;
     height: 100%;
-    background: url('assets/background1.jpg') repeat-x;
+    background: url('assets/background.jpg') repeat-x;
     background-size: cover;
 }
 
@@ -40,45 +38,27 @@ body, html {
     background: rgba(255, 0, 0, 0.5);
 }
 
-#scoreboard {
+#mobile-controls {
     position: absolute;
-    top: 10px;
+    bottom: 10%;
     left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.3);
-    padding: 10px 20px;
-    border-radius: 20px;
-    color: white;
-    font-size: 20px;
-    text-align: center;
-}
-
-#speed-container {
-    position: absolute;
-    top: 60px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.3);
-    padding: 10px 20px;
-    border-radius: 20px;
-    color: white;
-    font-size: 20px;
-    text-align: center;
-    display: flex;
-    align-items: center;
+    transform: translate(-50%, 10%);
+    width: 240px;
+    height: 240px;
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left . right"
+        ". down .";
+    grid-gap: 10px;
     justify-content: center;
-}
-
-#speed-label {
-    margin-right: 10px;
-}
-
-#speed-slider {
-    width: 100px;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 20px;
 }
 
 .control-button {
-    position: absolute;
     width: 60px;
     height: 60px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -92,42 +72,16 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid rgba(0, 0, 0, 0.5);
 }
 
-#character-button {
-    top: 10px;
-    left: 10px;
+.control-button img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
-#background-button {
-    top: 10px;
-    right: 10px;
-}
-
-#music-button {
-    bottom: 10px;
-    left: 10px;
-}
-
-#mobile-controls {
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 240px;
-    height: 240px;
-    display: grid;
-    grid-template-areas:
-        ". up ."
-        "left pause right"
-        ". down .";
-    grid-gap: 10px;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 20px;
-    padding: 20px;
+.control-button:active {
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 #up-button {
@@ -138,10 +92,6 @@ body, html {
     grid-area: left;
 }
 
-#pause-button {
-    grid-area: pause;
-}
-
 #down-button {
     grid-area: down;
 }
@@ -150,12 +100,24 @@ body, html {
     grid-area: right;
 }
 
-.control-button:active {
-    background-color: rgba(0, 0, 0, 0.7);
+#character-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
 }
 
-#character-button img, #background-button img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+#background-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+#music-button {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    font-size: 30px;
 }
