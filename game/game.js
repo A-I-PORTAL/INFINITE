@@ -30,7 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
 
-
+    // Initial setup
+    let musicIndex = 1;
+    let music = new Audio(`assets/music${musicIndex}.mp3`);
+    music.loop = true;
+    music.play();
+    
     // Music control code
     let currentTrackIndex = 0;
     let audioElement = new Audio();
