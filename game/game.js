@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Music control code
     let currentTrackIndex = 0;
     let audioElement = new Audio();
-    const musicFiles = [];
+    const musicFiles = ['assets/music/music1.mp3', 'assets/music/music2.mp3', 'assets/music/music3.mp3'];
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -270,32 +270,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load music files
-    async function loadMusicFiles() {
-        try {
-            const response = await fetch('assets/music/');
-            const text = await response.text();
-            const regex = /href="([^"]+\.(mp3|wav|ogg))"/g;
-            let match;
-            while ((match = regex.exec(text))) {
-                musicFiles.push(`assets/music/${match[1]}`);
-            }
-        } catch (error) {
-            console.error('Error loading music files:', error);
-        }
-    }
-
-    // Initialize music player
     function initMusicPlayer() {
         if (musicFiles.length > 0) {
             audioElement.src = musicFiles[currentTrackIndex];
             audioElement.loop = true;
             audioElement.play();
+
             musicButton.addEventListener('click', () => {
                 currentTrackIndex = (currentTrackIndex + 1) % musicFiles.length;
                 audioElement.src = musicFiles[currentTrackIndex];
                 audioElement.play();
             });
+        } else {
+            console.error('No music files found');
         }
     }
 
