@@ -255,24 +255,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function playNextMusic() {
         audioElement.pause();
-        audioElement = null;
 
         currentMusicIndex++;
-        audioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
-        audioElement.loop = true;
-
-        audioElement.addEventListener('error', () => {
-            currentMusicIndex = 1;
-            audioElement.src = `assets/music1.mp3`;
-            audioElement.load();
-            audioElement.play();
-        });
-
-        audioElement.addEventListener('canplaythrough', () => {
-            audioElement.play();
-        });
-
-        audioElement.load();
+        const nextMusicSrc = `assets/music${currentMusicIndex}.mp3`;
+        
+        // Check if the next music file exists
+        fetch(nextMusicSrc)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Next music file does not exist, resetting to first music file.');
+                }
+                return response.blob();
+            })
+            .then(() => {
+                audioElement.src = nextMusicSrc;
+                audioElement.load();
+                audioElement.play();
+            })
+            .catch(() => {
+                currentMusicIndex = 1;
+                audioElement.src = `assets/music1.mp3`;
+                audioElement.load();
+                audioElement.play();
+            });
     }
 
     musicButton.addEventListener('click', playNextMusic);
