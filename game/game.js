@@ -269,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
+    // Initialize the music player and setup event listeners
     // Function to update the music
     musicButton.addEventListener('click', () => {
     // Increment the music index
