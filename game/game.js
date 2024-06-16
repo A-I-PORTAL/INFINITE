@@ -23,23 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let topScore = 0;
     let landedPlatforms = new Set();
 
+    // Music control code
+    let currentTrackIndex = 0;
+    let audioElement = new Audio();
+    const musicFiles = [];
+
     // Character and background images
     const characterImages = [];
     let currentCharacterIndex = 1;
 
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
-
-    // Initial setup
-    let musicIndex = 1;
-    let music = new Audio(`assets/music${musicIndex}.mp3`);
-    music.loop = true;
-    music.play();
-    
-    // Music control code
-    let currentTrackIndex = 0;
-    let audioElement = new Audio();
-    const musicFiles = [];
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
