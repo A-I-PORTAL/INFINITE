@@ -23,17 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let topScore = 0;
     let landedPlatforms = new Set();
 
-    // Music control code
-    let currentTrackIndex = 0;
-    let audioElement = new Audio();
-    const musicFiles = [];
-
     // Character and background images
     const characterImages = [];
     let currentCharacterIndex = 1;
 
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
+
+    // Music control code
+    let currentTrackIndex = 0;
+    let audioElement = new Audio();
+    const musicFiles = [];
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { x: 2400, y: 300, width: 200, height: 10 },
         { x: 2700, y: 250, width: 200, height: 10 },
     ];
-    
+
     // Update score display
     function updateScore() {
         currentScoreDisplay.textContent = currentScore;
@@ -253,45 +253,44 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // Change character image
-    function changeCharacter() {
-        currentCharacterIndex = (currentCharacterIndex % characterImages.length) + 1;
-        characterIcon.src = `assets/character${currentCharacterIndex}.png`;
-        character.src = `assets/character${currentCharacterIndex}.png`;
+    // Initialize character and background buttons
+    function initCharacterButton() {
+        characterButton.addEventListener('click', () => {
+            currentCharacterIndex = (currentCharacterIndex + 1) % characterImages.length;
+            characterIcon.src = characterImages[currentCharacterIndex];
+            character.src = characterImages[currentCharacterIndex];
+        });
     }
 
-    // Change background image
-    function changeBackground() {
-        currentBackgroundIndex = (currentBackgroundIndex % backgroundImages.length) + 1;
-        backgroundIcon.src = `assets/background${currentBackgroundIndex}.jpg`;
-        background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
+    function initBackgroundButton() {
+        backgroundButton.addEventListener('click', () => {
+            currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
+            backgroundIcon.src = backgroundImages[currentBackgroundIndex];
+            background.style.backgroundImage = `url('${backgroundImages[currentBackgroundIndex]}')`;
+        });
     }
 
-    // Load music files dynamically from assets/music
+    // Load music files
     async function loadMusicFiles() {
         try {
-            const response = await fetch('assets/music');
-            if (response.ok) {
-                const text = await response.text();
-                const regex = /href="(music\d+\.mp3)"/g;
-                let match;
-                while ((match = regex.exec(text)) !== null) {
-                    musicFiles.push(`assets/music/${match[1]}`);
-                }
+            const response = await fetch('assets/music/');
+            const text = await response.text();
+            const regex = /href="([^"]+\.(mp3|wav|ogg))"/g;
+            let match;
+            while ((match = regex.exec(text))) {
+                musicFiles.push(`assets/music/${match[1]}`);
             }
         } catch (error) {
             console.error('Error loading music files:', error);
         }
     }
 
-    // Initialize the music player and setup event listeners
-    async function initMusicPlayer() {
-        await loadMusicFiles();
+    // Initialize music player
+    function initMusicPlayer() {
         if (musicFiles.length > 0) {
             audioElement.src = musicFiles[currentTrackIndex];
             audioElement.loop = true;
             audioElement.play();
-
             musicButton.addEventListener('click', () => {
                 currentTrackIndex = (currentTrackIndex + 1) % musicFiles.length;
                 audioElement.src = musicFiles[currentTrackIndex];
@@ -299,31 +298,33 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-    
-    // Initial setup and event listeners
-    window.addEventListener('resize', resizeGame);
+
+    // Event listeners
     document.addEventListener('keydown', moveCharacter);
     document.addEventListener('touchstart', preventZoom, { passive: false });
-
-    document.querySelectorAll('.control-button').forEach(button => {
-        button.addEventListener('touchstart', mobileControl);
-        button.addEventListener('mousedown', mobileControl);
+    window.addEventListener('resize', resizeGame);
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            togglePause();
+        }
     });
 
-    characterButton.addEventListener('click', changeCharacter);
-    backgroundButton.addEventListener('click', changeBackground);
-    document.getElementById('pause-button').addEventListener('click', togglePause);
+    // Initialize mobile controls
+    document.getElementById('up-button').addEventListener('click', mobileControl);
+    document.getElementById('down-button').addEventListener('click', mobileControl);
+    document.getElementById('left-button').addEventListener('click', mobileControl);
+    document.getElementById('right-button').addEventListener('click', mobileControl);
 
-    speedSlider.addEventListener('input', () => {
-        scrollSpeed = parseInt(speedSlider.value, 10);
-    });
-
+    // Initialize the game
+    initCollisionObjects();
     loadCharacterImages();
     loadBackgroundImages();
-    initCollisionObjects();
-    resizeGame();
+    initCharacterButton();
+    initBackgroundButton();
+    loadMusicFiles().then(initMusicPlayer);
+
+    // Start game loop
     scrollBackground();
     applyGravity();
-    updateScore();
-    initMusicPlayer();
+    resizeGame();
 });
