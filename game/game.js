@@ -26,12 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
-    
-    // Initial setup
-    let musicIndex = 1;
-    let music = new Audio(`assets/music${musicIndex}.mp3`);
-    music.loop = true;
-    music.play();
+
+    // Initial setup for music
+    let currentMusicIndex = 1;
+    const audioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
+    audioElement.loop = true;
+    audioElement.play();
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -253,37 +253,34 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
-    // Function to update the music
-    musicButton.addEventListener('click', () => {
-    // Increment the music index
-    musicIndex++;
-    
-    // Pause and stop the current music
-    music.pause();
-    music.currentTime = 0;
+    // Function to load and play the next music file
+    function playNextMusic() {
+        // Stop the current audio
+        audioElement.pause();
+        // Increment the music index
+        currentMusicIndex++;
+        // Create a new audio element with the next music file
+        const nextAudioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
+        nextAudioElement.loop = true;
+        // Add an event listener to handle the case when the music file is not found
+        nextAudioElement.addEventListener('error', () => {
+            // Reset the music index and try the first music file
+            currentMusicIndex = 1;
+            nextAudioElement.src = `assets/music1.mp3`;
+            nextAudioElement.load();
+            nextAudioElement.play();
+        });
+        // Play the next music if the file is found
+        nextAudioElement.addEventListener('canplaythrough', () => {
+            nextAudioElement.play();
+        });
+        // Load and play the new audio element
+        nextAudioElement.load();
+        // Set the current audio element to the new one
+        audioElement = nextAudioElement;
+    }
 
-    // Attempt to create a new audio object with the next music file
-    let nextMusic = new Audio(`assets/music${musicIndex}.mp3`);
-    
-    // Handle the error if the file does not exist (by resetting to 1)
-    nextMusic.addEventListener('error', () => {
-        musicIndex = 1;
-        nextMusic = new Audio(`assets/music${musicIndex}.mp3`);
-        nextMusic.loop = true;
-        nextMusic.play();
-        music = nextMusic;
-    });
-
-    // If the file exists, play it
-    nextMusic.addEventListener('canplaythrough', () => {
-        nextMusic.loop = true;
-        nextMusic.play();
-        music = nextMusic;
-    });
-
-    // Attempt to load the next file
-    nextMusic.load();
-    });
+    musicButton.addEventListener('click', playNextMusic);
 
     window.addEventListener('resize', resizeGame);
 
