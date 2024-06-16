@@ -30,12 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
 
+
     // Music control code
-    // Initial setup
-    let musicIndex = 1;
-    let music = new Audio(`assets/music${musicIndex}.mp3`);
-    music.loop = true;
-    music.play();
+    let currentTrackIndex = 0;
+    let audioElement = new Audio();
+    const musicFiles = [];
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -269,49 +268,48 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
+    // Load music files dynamically from assets/music
+    async function loadMusicFiles() {
+        try {
+            const response = await fetch('assets/music');
+            if (response.ok) {
+                const text = await response.text();
+                const regex = /href="(music\d+\.mp3)"/g;
+                let match;
+                while ((match = regex.exec(text)) !== null) {
+                    musicFiles.push(`assets/music/${match[1]}`);
+                }
+            }
+        } catch (error) {
+            console.error('Error loading music files:', error);
+        }
+    }
+
     // Initialize the music player and setup event listeners
-    // Function to update the music
-    musicButton.addEventListener('click', () => {
-    // Increment the music index
-    musicIndex++;
+    async function initMusicPlayer() {
+        await loadMusicFiles();
+        if (musicFiles.length > 0) {
+            audioElement.src = musicFiles[currentTrackIndex];
+            audioElement.loop = true;
+            audioElement.play();
+
+            musicButton.addEventListener('click', () => {
+                currentTrackIndex = (currentTrackIndex + 1) % musicFiles.length;
+                audioElement.src = musicFiles[currentTrackIndex];
+                audioElement.play();
+            });
+        }
+    }
     
-    // Pause and stop the current music
-    music.pause();
-    music.currentTime = 0;
-
-    // Attempt to create a new audio object with the next music file
-    let nextMusic = new Audio(`assets/music${musicIndex}.mp3`);
-    
-    // Handle the error if the file does not exist (by resetting to 1)
-    nextMusic.addEventListener('error', () => {
-        musicIndex = 1;
-        nextMusic = new Audio(`assets/music${musicIndex}.mp3`);
-        nextMusic.loop = true;
-        nextMusic.play();
-        music = nextMusic;
-    });
-
-    // If the file exists, play it
-    nextMusic.addEventListener('canplaythrough', () => {
-        nextMusic.loop = true;
-        nextMusic.play();
-        music = nextMusic;
-    });
-
-    // Attempt to load the next file
-    nextMusic.load();
-    });
-
+    // Initial setup and event listeners
     window.addEventListener('resize', resizeGame);
-
     document.addEventListener('keydown', moveCharacter);
+    document.addEventListener('touchstart', preventZoom, { passive: false });
 
     document.querySelectorAll('.control-button').forEach(button => {
         button.addEventListener('touchstart', mobileControl);
         button.addEventListener('mousedown', mobileControl);
     });
-
-    document.addEventListener('touchstart', preventZoom, { passive: false });
 
     characterButton.addEventListener('click', changeCharacter);
     backgroundButton.addEventListener('click', changeBackground);
@@ -328,4 +326,5 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollBackground();
     applyGravity();
     updateScore();
+    initMusicPlayer();
 });
