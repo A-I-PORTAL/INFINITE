@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial setup for music
     let currentMusicIndex = 1;
-    const audioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
+    let audioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
     audioElement.loop = true;
     audioElement.play();
 
@@ -253,39 +253,32 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
-    // Function to load and play the next music file
     function playNextMusic() {
-        // Stop the current audio
         audioElement.pause();
-        // Increment the music index
+        audioElement = null;
+
         currentMusicIndex++;
-        // Create a new audio element with the next music file
-        const nextAudioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
-        nextAudioElement.loop = true;
-        // Add an event listener to handle the case when the music file is not found
-        nextAudioElement.addEventListener('error', () => {
-            // Reset the music index and try the first music file
+        audioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
+        audioElement.loop = true;
+
+        audioElement.addEventListener('error', () => {
             currentMusicIndex = 1;
-            nextAudioElement.src = `assets/music1.mp3`;
-            nextAudioElement.load();
-            nextAudioElement.play();
+            audioElement.src = `assets/music1.mp3`;
+            audioElement.load();
+            audioElement.play();
         });
-        // Play the next music if the file is found
-        nextAudioElement.addEventListener('canplaythrough', () => {
-            nextAudioElement.play();
+
+        audioElement.addEventListener('canplaythrough', () => {
+            audioElement.play();
         });
-        // Load and play the new audio element
-        nextAudioElement.load();
-        // Set the current audio element to the new one
-        audioElement = nextAudioElement;
+
+        audioElement.load();
     }
 
     musicButton.addEventListener('click', playNextMusic);
 
     window.addEventListener('resize', resizeGame);
-
     document.addEventListener('keydown', moveCharacter);
-
     document.querySelectorAll('.control-button').forEach(button => {
         button.addEventListener('touchstart', mobileControl);
         button.addEventListener('mousedown', mobileControl);
