@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load music files dynamically from assets/music
     async function loadMusicFiles() {
         try {
-            const response = await fetch('assets');
+            const response = await fetch('assets/music');
             if (response.ok) {
                 const text = await response.text();
                 const regex = /href="(music\d+\.mp3)"/g;
