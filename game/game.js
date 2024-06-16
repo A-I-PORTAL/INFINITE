@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
-
+    
+    // Initial setup
     let musicIndex = 1;
     let music = new Audio(`assets/music${musicIndex}.mp3`);
     music.loop = true;
@@ -257,6 +258,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Increment the music index
     musicIndex++;
     
+    // Pause and stop the current music
+    music.pause();
+    music.currentTime = 0;
+
     // Attempt to create a new audio object with the next music file
     let nextMusic = new Audio(`assets/music${musicIndex}.mp3`);
     
@@ -271,7 +276,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // If the file exists, play it
     nextMusic.addEventListener('canplaythrough', () => {
-        music.pause();
         nextMusic.loop = true;
         nextMusic.play();
         music = nextMusic;
