@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // DOM elements
     const gameContainer = document.getElementById('game-container');
     const background = document.getElementById('background');
     const character = document.getElementById('character');
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundIcon = document.getElementById('background-icon');
     const musicButton = document.getElementById('music-button');
 
+    // Game state variables
     let bgPosition = 0;
     let gravity = 0.125;
     let velocity = 0;
@@ -21,12 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let topScore = 0;
     let landedPlatforms = new Set();
 
+    // Character and background images
     const characterImages = [];
     let currentCharacterIndex = 1;
 
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
-    
+
+    // Music control code
     // Initial setup
     let musicIndex = 1;
     let music = new Audio(`assets/music${musicIndex}.mp3`);
@@ -45,12 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
         { x: 2400, y: 300, width: 200, height: 10 },
         { x: 2700, y: 250, width: 200, height: 10 },
     ];
-
+    
+    // Update score display
     function updateScore() {
         currentScoreDisplay.textContent = currentScore;
         topScoreDisplay.textContent = topScore;
     }
 
+    // Scroll background and collision object
     function scrollBackground() {
         if (isPaused) return;
         bgPosition -= scrollSpeed;
@@ -71,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(scrollBackground);
     }
 
+    // Move character based on key input
     function moveCharacter(event) {
         if (isPaused) return;
 
@@ -103,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Apply gravity to character
     function applyGravity() {
         if (isPaused) return;
 
@@ -158,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(applyGravity);
     }
 
+    // Resize game elements based on window size
     function resizeGame() {
         const gameWidth = gameContainer.clientWidth;
         const gameHeight = gameContainer.clientHeight;
@@ -181,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mobileControls.style.height = '240px';
     }
 
+    // Initialize collision objects
     function initCollisionObjects() {
         const gameContainer = document.getElementById('game-container');
         collisionObjects.forEach((obj, index) => {
@@ -201,12 +211,14 @@ document.addEventListener('DOMContentLoaded', () => {
         moveCharacter({ key: eventKey });
     }
 
+    // Prevent zoom on double-tap for mobile devices
     function preventZoom(event) {
         if (event.touches.length > 1) {
             event.preventDefault();
         }
     }
 
+    // Toggle pause state
     function togglePause() {
         isPaused = !isPaused;
         if (!isPaused) {
@@ -215,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Load character images dynamically
     function loadCharacterImages() {
         let i = 1;
         let img = new Image();
@@ -228,6 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // Load background images dynamically
     function loadBackgroundImages() {
         let i = 1;
         let img = new Image();
@@ -241,12 +255,14 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // Change character image
     function changeCharacter() {
         currentCharacterIndex = (currentCharacterIndex % characterImages.length) + 1;
         characterIcon.src = `assets/character${currentCharacterIndex}.png`;
         character.src = `assets/character${currentCharacterIndex}.png`;
     }
 
+    // Change background image
     function changeBackground() {
         currentBackgroundIndex = (currentBackgroundIndex % backgroundImages.length) + 1;
         backgroundIcon.src = `assets/background${currentBackgroundIndex}.jpg`;
