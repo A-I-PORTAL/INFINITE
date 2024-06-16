@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentBackgroundIndex = 1;
 
     let musicIndex = 1;
-    let music = new Audio(`assets/music1.mp3`);
+    let music = new Audio(`assets/music${musicIndex}.mp3`);
     music.loop = true;
     music.play();
 
@@ -254,11 +254,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to update the music
     musicButton.addEventListener('click', () => {
-        musicIndex = (musicIndex % 3) + 1; // Assuming 3 music tracks
+    // Increment the music index
+    musicIndex++;
+    
+    // Attempt to create a new audio object with the next music file
+    let nextMusic = new Audio(`assets/music${musicIndex}.mp3`);
+    
+    // Handle the error if the file does not exist (by resetting to 1)
+    nextMusic.addEventListener('error', () => {
+        musicIndex = 1;
+        nextMusic = new Audio(`assets/music${musicIndex}.mp3`);
+        nextMusic.loop = true;
+        nextMusic.play();
+        music = nextMusic;
+    });
+
+    // If the file exists, play it
+    nextMusic.addEventListener('canplaythrough', () => {
         music.pause();
-        music = new Audio(`assets/music${musicIndex}.mp3`);
-        music.loop = true;
-        music.play();
+        nextMusic.loop = true;
+        nextMusic.play();
+        music = nextMusic;
+    });
+
+    // Attempt to load the next file
+    nextMusic.load();
     });
 
     window.addEventListener('resize', resizeGame);
