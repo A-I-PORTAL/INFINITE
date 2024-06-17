@@ -253,10 +253,14 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
+    // Updated playNextMusic function
     function playNextMusic() {
         audioElement.pause();
 
         currentMusicIndex++;
+        if (currentMusicIndex > 5) {
+            currentMusicIndex = 1;
+        }
         const nextMusicSrc = `assets/music${currentMusicIndex}.mp3`;
         
         // Check if the next music file exists
