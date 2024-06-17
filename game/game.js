@@ -274,22 +274,43 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    musicButton.addEventListener('click', playNextMusic);
+    musicButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        playNextMusic();
+    });
 
-    characterButton.addEventListener('click', changeCharacter);
-    backgroundButton.addEventListener('click', changeBackground);
+    characterButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        changeCharacter();
+    });
+
+    backgroundButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        changeBackground();
+    });
+
     speedSlider.addEventListener('input', (event) => {
+        event.stopPropagation();
         scrollSpeed = parseInt(event.target.value, 10);
     });
 
     window.addEventListener('resize', resizeGame);
     window.addEventListener('keydown', moveCharacter);
     window.addEventListener('touchstart', preventZoom);
-    window.addEventListener('touchend', togglePause);
+    window.addEventListener('touchend', (event) => {
+        event.stopPropagation();
+        togglePause();
+    });
 
     document.querySelectorAll('#mobile-controls button').forEach(button => {
-        button.addEventListener('touchstart', mobileControl);
-        button.addEventListener('mousedown', mobileControl);
+        button.addEventListener('touchstart', (event) => {
+            event.stopPropagation();
+            mobileControl(event);
+        });
+        button.addEventListener('mousedown', (event) => {
+            event.stopPropagation();
+            mobileControl(event);
+        });
     });
 
     loadCharacterImages();
