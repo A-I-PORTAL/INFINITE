@@ -242,24 +242,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function changeCharacter() {
         currentCharacterIndex = (currentCharacterIndex % characterImages.length) + 1;
-        characterIcon.src = `assets/character${currentCharacterIndex}.png`;
-        character.src = `assets/character${currentCharacterIndex}.png`;
+        character.src = characterImages[currentCharacterIndex - 1];
+        characterIcon.src = characterImages[currentCharacterIndex - 1];
     }
 
     function changeBackground() {
         currentBackgroundIndex = (currentBackgroundIndex % backgroundImages.length) + 1;
-        backgroundIcon.src = `assets/background${currentBackgroundIndex}.jpg`;
-        background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
+        background.style.backgroundImage = `url(${backgroundImages[currentBackgroundIndex - 1]})`;
+        backgroundIcon.src = backgroundImages[currentBackgroundIndex - 1];
     }
 
-    // Function to load the next music file
+    // Revised function to play the next music track
     function playNextMusic() {
-        audioElement.pause();
-
         currentMusicIndex++;
         const nextMusicSrc = `assets/music${currentMusicIndex}.mp3`;
-        
-        // Check if the file exists
+
         fetch(nextMusicSrc)
             .then(response => {
                 if (response.ok) {
