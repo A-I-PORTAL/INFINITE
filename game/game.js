@@ -27,10 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
 
-    let musicIndex = 1;
-    let music = new Audio(`assets/music1.mp3`);
-    music.loop = true;
-    music.play();
+    // Initial setup for music
+    let currentMusicIndex = 1;
+    let audioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
+    audioElement.loop = true;
+    audioElement.play();
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -252,19 +253,37 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
-    // Function to update the music
-    musicButton.addEventListener('click', () => {
-        musicIndex = (musicIndex % 3) + 1; // Assuming 3 music tracks
-        music.pause();
-        music = new Audio(`assets/music${musicIndex}.mp3`);
-        music.loop = true;
-        music.play();
-    });
+    function playNextMusic() {
+        audioElement.pause();
+
+        currentMusicIndex++;
+        const nextMusicSrc = `assets/music${currentMusicIndex}.mp3`;
+        
+        // Check if the next music file exists
+        fetch(nextMusicSrc)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Next music file does not exist, resetting to first music file.');
+                }
+                return response.blob();
+            })
+            .then(() => {
+                audioElement.src = nextMusicSrc;
+                audioElement.load();
+                audioElement.play();
+            })
+            .catch(() => {
+                currentMusicIndex = 1;
+                audioElement.src = `assets/music1.mp3`;
+                audioElement.load();
+                audioElement.play();
+            });
+    }
+
+    musicButton.addEventListener('click', playNextMusic);
 
     window.addEventListener('resize', resizeGame);
-
     document.addEventListener('keydown', moveCharacter);
-
     document.querySelectorAll('.control-button').forEach(button => {
         button.addEventListener('touchstart', mobileControl);
         button.addEventListener('mousedown', mobileControl);
