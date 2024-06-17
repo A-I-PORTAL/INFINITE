@@ -27,11 +27,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
 
-    // Initial setup for music
-    let currentMusicIndex = 1;
-    const audioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
+    let musicFiles = [];
+    let currentMusicIndex = 0;
+    let audioElement = new Audio();
+
+    function loadMusicFiles() {
+        let i = 1;
+        let audio = new Audio();
+        audio.src = `assets/music${i}.mp3`;
+        audio.addEventListener('loadeddata', function () {
+            while (this.readyState >= 2) {
+                musicFiles.push(this.src);
+                i++;
+                this.src = `assets/music${i}.mp3`;
+            }
+        });
+    }
+
+    loadMusicFiles();
+
+    function playNextMusic() {
+        if (musicFiles.length === 0) return;
+
+        audioElement.pause();
+
+        currentMusicIndex = (currentMusicIndex + 1) % musicFiles.length;
+        audioElement.src = musicFiles[currentMusicIndex];
+        audioElement.load();
+        audioElement.play();
+    }
+
     audioElement.loop = true;
-    audioElement.play();
+
+    audioElement.addEventListener('canplaythrough', () => {
+        audioElement.play();
+    });
+
+    musicButton.addEventListener('click', playNextMusic);
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -182,23 +214,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initCollisionObjects() {
-        const gameContainer = document.getElementById('game-container');
+        const collisionContainer = document.createElement('div');
+        collisionContainer.id = 'collision-container';
+        gameContainer.appendChild(collisionContainer);
+
         collisionObjects.forEach((obj, index) => {
-            const div = document.createElement('div');
-            div.classList.add('collision-object');
-            div.id = `collision-object-${index}`;
-            div.style.left = `${obj.x}px`;
-            div.style.top = `${obj.y}px`;
-            div.style.width = `${obj.width}px`;
-            div.style.height = `${obj.height}px`;
-            gameContainer.appendChild(div);
+            const objElement = document.createElement('div');
+            objElement.id = `collision-object-${index}`;
+            objElement.className = 'collision-object';
+            objElement.style.left = `${obj.x}px`;
+            objElement.style.top = `${obj.y}px`;
+            objElement.style.width = `${obj.width}px`;
+            objElement.style.height = `${obj.height}px`;
+            collisionContainer.appendChild(objElement);
         });
     }
 
     function mobileControl(event) {
-        const control = event.target.id.replace('-button', '');
-        const eventKey = `Arrow${control.charAt(0).toUpperCase() + control.slice(1)}`;
-        moveCharacter({ key: eventKey });
+        const touch = event.touches[0];
+        const touchX = touch.clientX;
+        const touchY = touch.clientY;
+
+        const controlButtons = document.querySelectorAll('.control-button');
+        controlButtons.forEach((button) => {
+            const rect = button.getBoundingClientRect();
+            if (
+                touchX >= rect.left &&
+                touchX <= rect.right &&
+                touchY >= rect.top &&
+                touchY <= rect.bottom
+            ) {
+                const event = new KeyboardEvent('keydown', {
+                    key: button.dataset.key,
+                });
+                moveCharacter(event);
+            }
+        });
     }
 
     function preventZoom(event) {
@@ -215,86 +266,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function loadCharacterImages() {
-        let i = 1;
-        let img = new Image();
-        img.src = `assets/character${i}.png`;
-        img.onload = function () {
-            while (this.complete) {
-                characterImages.push(this.src);
-                i++;
-                this.src = `assets/character${i}.png`;
-            }
-        };
-    }
-
-    function loadBackgroundImages() {
-        let i = 1;
-        let img = new Image();
-        img.src = `assets/background${i}.jpg`;
-        img.onload = function () {
-            while (this.complete) {
-                backgroundImages.push(this.src);
-                i++;
-                this.src = `assets/background${i}.jpg`;
-            }
-        };
-    }
-
     function changeCharacter() {
-        currentCharacterIndex = (currentCharacterIndex % characterImages.length) + 1;
-        characterIcon.src = `assets/character${currentCharacterIndex}.png`;
-        character.src = `assets/character${currentCharacterIndex}.png`;
+        currentCharacterIndex++;
+        if (currentCharacterIndex > characterImages.length) {
+            currentCharacterIndex = 1;
+        }
+        character.src = characterImages[currentCharacterIndex - 1];
+        characterIcon.src = characterImages[currentCharacterIndex - 1];
+    }
+
+    function loadCharacterImages() {
+        for (let i = 1; i <= 5; i++) {
+            const img = new Image();
+            img.src = `assets/character${i}.png`;
+            characterImages.push(img.src);
+        }
+        character.src = characterImages[0];
+        characterIcon.src = characterImages[0];
     }
 
     function changeBackground() {
-        currentBackgroundIndex = (currentBackgroundIndex % backgroundImages.length) + 1;
-        backgroundIcon.src = `assets/background${currentBackgroundIndex}.jpg`;
-        background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
+        currentBackgroundIndex++;
+        if (currentBackgroundIndex > backgroundImages.length) {
+            currentBackgroundIndex = 1;
+        }
+        background.style.backgroundImage = `url(${backgroundImages[currentBackgroundIndex - 1]})`;
+        backgroundIcon.src = backgroundImages[currentBackgroundIndex - 1];
     }
 
-    // Function to load and play the next music file
-    function playNextMusic() {
-        console.log(`Current Music Index before increment: ${currentMusicIndex}`);
-        audioElement.pause();
-
-        currentMusicIndex++;
-        if (currentMusicIndex > 5) {
-            currentMusicIndex = 1;
+    function loadBackgroundImages() {
+        for (let i = 1; i <= 5; i++) {
+            const img = new Image();
+            img.src = `assets/background${i}.jpg`;
+            backgroundImages.push(img.src);
         }
-
-    const nextMusicSrc = `assets/music${currentMusicIndex}.mp3`;
-
-    console.log(`Next Music Source: ${nextMusicSrc}`);
-
-    // Check if the next music file exists
-    fetch(nextMusicSrc)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Next music file does not exist, resetting to first music file.');
-            }
-            return response.blob();
-        })
-        .then(() => {
-            audioElement.src = nextMusicSrc;
-            audioElement.load();
-            audioElement.play();
-            console.log(`Playing: ${nextMusicSrc}`);
-        })
-        .catch(() => {
-            currentMusicIndex = 1;
-            audioElement.src = `assets/music1.mp3`;
-            audioElement.load();
-            audioElement.play();
-            console.log(`Reset to: assets/music1.mp3`);
-        });
-}
+        background.style.backgroundImage = `url(${backgroundImages[0]})`;
+        backgroundIcon.src = backgroundImages[0];
+    }
 
     window.addEventListener('resize', resizeGame);
-
     document.addEventListener('keydown', moveCharacter);
-
-    document.querySelectorAll('.control-button').forEach(button => {
+    document.querySelectorAll('.control-button').forEach((button) => {
         button.addEventListener('touchstart', mobileControl);
         button.addEventListener('mousedown', mobileControl);
     });
