@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial setup for music
     let currentMusicIndex = 1;
-    let audioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
+    const audioElement = new Audio(`assets/music${currentMusicIndex}.mp3`);
     audioElement.loop = true;
     audioElement.play();
 
@@ -253,41 +253,47 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
-    // Updated playNextMusic function
+    // Function to load and play the next music file
     function playNextMusic() {
+        console.log(`Current Music Index before increment: ${currentMusicIndex}`);
         audioElement.pause();
 
         currentMusicIndex++;
         if (currentMusicIndex > 5) {
             currentMusicIndex = 1;
         }
-        const nextMusicSrc = `assets/music${currentMusicIndex}.mp3`;
-        
-        // Check if the next music file exists
-        fetch(nextMusicSrc)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Next music file does not exist, resetting to first music file.');
-                }
-                return response.blob();
-            })
-            .then(() => {
-                audioElement.src = nextMusicSrc;
-                audioElement.load();
-                audioElement.play();
-            })
-            .catch(() => {
-                currentMusicIndex = 1;
-                audioElement.src = `assets/music1.mp3`;
-                audioElement.load();
-                audioElement.play();
-            });
-    }
 
-    musicButton.addEventListener('click', playNextMusic);
+    const nextMusicSrc = `assets/music${currentMusicIndex}.mp3`;
+
+    console.log(`Next Music Source: ${nextMusicSrc}`);
+
+    // Check if the next music file exists
+    fetch(nextMusicSrc)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Next music file does not exist, resetting to first music file.');
+            }
+            return response.blob();
+        })
+        .then(() => {
+            audioElement.src = nextMusicSrc;
+            audioElement.load();
+            audioElement.play();
+            console.log(`Playing: ${nextMusicSrc}`);
+        })
+        .catch(() => {
+            currentMusicIndex = 1;
+            audioElement.src = `assets/music1.mp3`;
+            audioElement.load();
+            audioElement.play();
+            console.log(`Reset to: assets/music1.mp3`);
+        });
+}
 
     window.addEventListener('resize', resizeGame);
+
     document.addEventListener('keydown', moveCharacter);
+
     document.querySelectorAll('.control-button').forEach(button => {
         button.addEventListener('touchstart', mobileControl);
         button.addEventListener('mousedown', mobileControl);
