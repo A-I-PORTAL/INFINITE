@@ -26,11 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
-
-    // Initial setup for music
-    let currentMusicIndex = 1;
-    let audioElement = new Audio();
-    audioElement.loop = true;
+    
+    // Initial setup
+    let musicIndex = 1;
+    let music = new Audio(`assets/music${musicIndex}.mp3`);
+    music.loop = true;
+    music.play();
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -242,81 +243,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function changeCharacter() {
         currentCharacterIndex = (currentCharacterIndex % characterImages.length) + 1;
-        character.src = characterImages[currentCharacterIndex - 1];
-        characterIcon.src = characterImages[currentCharacterIndex - 1];
+        characterIcon.src = `assets/character${currentCharacterIndex}.png`;
+        character.src = `assets/character${currentCharacterIndex}.png`;
     }
 
     function changeBackground() {
         currentBackgroundIndex = (currentBackgroundIndex % backgroundImages.length) + 1;
-        background.style.backgroundImage = `url(${backgroundImages[currentBackgroundIndex - 1]})`;
-        backgroundIcon.src = backgroundImages[currentBackgroundIndex - 1];
+        backgroundIcon.src = `assets/background${currentBackgroundIndex}.jpg`;
+        background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
-    // Revised function to play the next music track
-    function playNextMusic() {
-        currentMusicIndex++;
-        const nextMusicSrc = `assets/music${currentMusicIndex}.mp3`;
+    // Function to update the music
+    musicButton.addEventListener('click', () => {
+    // Increment the music index
+    musicIndex++;
+    
+    // Pause and stop the current music
+    music.pause();
+    music.currentTime = 0;
 
-        fetch(nextMusicSrc)
-            .then(response => {
-                if (response.ok) {
-                    audioElement.src = nextMusicSrc;
-                    audioElement.play();
-                } else {
-                    // If the file doesn't exist, reset the index and try the first file
-                    currentMusicIndex = 1;
-                    audioElement.src = `assets/music${currentMusicIndex}.mp3`;
-                    audioElement.play();
-                }
-            })
-            .catch(error => {
-                console.error('Error loading music file:', error);
-            });
-    }
-
-    musicButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        playNextMusic();
+    // Attempt to create a new audio object with the next music file
+    let nextMusic = new Audio(`assets/music${musicIndex}.mp3`);
+    
+    // Handle the error if the file does not exist (by resetting to 1)
+    nextMusic.addEventListener('error', () => {
+        musicIndex = 1;
+        nextMusic = new Audio(`assets/music${musicIndex}.mp3`);
+        nextMusic.loop = true;
+        nextMusic.play();
+        music = nextMusic;
     });
 
-    characterButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        changeCharacter();
+    // If the file exists, play it
+    nextMusic.addEventListener('canplaythrough', () => {
+        nextMusic.loop = true;
+        nextMusic.play();
+        music = nextMusic;
     });
 
-    backgroundButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        changeBackground();
-    });
-
-    speedSlider.addEventListener('input', (event) => {
-        event.stopPropagation();
-        scrollSpeed = parseInt(event.target.value, 10);
+    // Attempt to load the next file
+    nextMusic.load();
     });
 
     window.addEventListener('resize', resizeGame);
-    window.addEventListener('keydown', moveCharacter);
-    window.addEventListener('touchstart', preventZoom);
-    window.addEventListener('touchend', (event) => {
-        event.stopPropagation();
-        togglePause();
+
+    document.addEventListener('keydown', moveCharacter);
+
+    document.querySelectorAll('.control-button').forEach(button => {
+        button.addEventListener('touchstart', mobileControl);
+        button.addEventListener('mousedown', mobileControl);
     });
 
-    document.querySelectorAll('#mobile-controls button').forEach(button => {
-        button.addEventListener('touchstart', (event) => {
-            event.stopPropagation();
-            mobileControl(event);
-        });
-        button.addEventListener('mousedown', (event) => {
-            event.stopPropagation();
-            mobileControl(event);
-        });
+    document.addEventListener('touchstart', preventZoom, { passive: false });
+
+    characterButton.addEventListener('click', changeCharacter);
+    backgroundButton.addEventListener('click', changeBackground);
+    document.getElementById('pause-button').addEventListener('click', togglePause);
+
+    speedSlider.addEventListener('input', () => {
+        scrollSpeed = parseInt(speedSlider.value, 10);
     });
 
     loadCharacterImages();
     loadBackgroundImages();
     initCollisionObjects();
+    resizeGame();
     scrollBackground();
     applyGravity();
-    resizeGame();
+    updateScore();
 });
