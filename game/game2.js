@@ -153,34 +153,32 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(applyGravity);
     }
 
-    function resizeGame() {
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
+function resizeGame() {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-        const newHeight = 1024;
-        const newWidth = (viewportWidth / viewportHeight) * newHeight;
+    gameContainer.style.width = `${viewportWidth}px`;
+    gameContainer.style.height = `${viewportHeight}px`;
+    background.style.width = `${viewportWidth}px`;
+    background.style.height = `${viewportHeight}px`;
 
-        gameContainer.style.width = `${newWidth}px`;
-        gameContainer.style.height = `${newHeight}px`;
-        background.style.width = `${newWidth}px`;
-        background.style.height = `${newHeight}px`;
+    const characterScale = viewportWidth / 800;
+    character.style.width = `${characterScale * 50}px`;
+    character.style.height = 'auto';
 
-        const characterScale = newWidth / 800;
-        character.style.width = `${characterScale * 50}px`;
-        character.style.height = 'auto';
+    collisionObjects.forEach((obj, index) => {
+        const objElement = document.getElementById(`collision-object-${index}`);
+        objElement.style.left = `${obj.x}px`;
+        objElement.style.top = `${obj.y}px`;
+        objElement.style.width = `${obj.width}px`;
+        objElement.style.height = `${obj.height}px`;
+    });
 
-        collisionObjects.forEach((obj, index) => {
-            const objElement = document.getElementById(`collision-object-${index}`);
-            objElement.style.left = `${obj.x}px`;
-            objElement.style.top = `${obj.y}px`;
-            objElement.style.width = `${obj.width}px`;
-            objElement.style.height = `${obj.height}px`;
-        });
+    const mobileControls = document.getElementById('mobile-controls');
+    mobileControls.style.width = '240px';
+    mobileControls.style.height = '240px';
+}
 
-        const mobileControls = document.getElementById('mobile-controls');
-        mobileControls.style.width = '240px';
-        mobileControls.style.height = '240px';
-    }
 
     function initCollisionObjects() {
         const gameContainer = document.getElementById('game-container');
@@ -258,7 +256,17 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'level3.html'; // Assuming level3.html is the next level's page
     }
 
-    window.addEventListener('resize', resizeGame);
+    window.addEventListener('resize', () => {
+        resizeGame();
+        positionMobileControls();
+    });
+
+    function positionMobileControls() {
+        const mobileControls = document.getElementById('mobile-controls');
+        mobileControls.style.left = '50%';
+        mobileControls.style.bottom = '10%';
+        mobileControls.style.transform = 'translate(-50%, 0)';
+}
 
     document.addEventListener('keydown', moveCharacter);
 
