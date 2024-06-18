@@ -3,31 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Level 1</title>
+    <title>INFINITE: Scrolling Game [LEVEL 1]</title>
     <link rel="stylesheet" href="style1.css">
 </head>
 <body>
     <div id="game-container">
         <div id="background"></div>
         <img id="character" src="assets/character1.png" alt="Character">
-    </div>
-    <div id="ui-container">
-        <div id="score-board">
-            <div>Current Score: <span id="current-score">0</span></div>
-            <div>Top Score: <span id="top-score">0</span></div>
+        <!-- Character Change Button -->
+        <div id="character-button" class="control-button">
+            <img id="character-icon" src="assets/character1.png" alt="Character Icon">
         </div>
-        <div id="controls">
-            <button id="character-button"><img id="character-icon" src="assets/character1.png" alt="Character Icon"></button>
-            <button id="background-button"><img id="background-icon" src="assets/background1.jpg" alt="Background Icon"></button>
-            <button id="musicBtn">Pause Music</button>
-            <button id="level-button">Next Level</button>
-            <input type="range" id="speed-slider" min="0.5" max="5" value="2" step="0.1">
+        <!-- Background Change Button -->
+        <div id="background-button" class="control-button">
+            <img id="background-icon" src="assets/background1.jpg" alt="Background Icon">
         </div>
+        <!-- Music Change Button -->
+        <div id="musicBtn" class="control-button">
+            <span id="music-icon">🔊</span>
+        </div>
+        <!-- Level Change Button -->
+        <a href="level2.html" id="level-button" class="control-button">
+            <img id="level-icon" src="assets/level2.jpg" alt="Level Icon">
+        </a>
+        <!-- Score Display -->
+        <div id="scoreboard">
+            <div id="score-text">SCORE&nbsp;<span id="current-score">0</span>&nbsp;|&nbsp;TOP&nbsp;<span id="top-score">0</span></div>
+        </div>
+        <!-- Speed Slider -->
+        <div id="speed-container">
+            <label for="speed-slider" id="speed-label">SPEED</label>
+            <input type="range" id="speed-slider" min="1" max="10" value="2">
+        </div>
+        <!-- Mobile Controls -->
         <div id="mobile-controls">
-            <button id="up-button">↑</button>
-            <button id="down-button">↓</button>
-            <button id="left-button">←</button>
-            <button id="right-button">→</button>
+            <div id="up-button" class="control-button">↑</div>
+            <div id="left-button" class="control-button">←</div>
+            <div id="down-button" class="control-button">↓</div>
+            <div id="right-button" class="control-button">→</div>
+            <div id="pause-button" class="control-button">⏸️</div>
         </div>
     </div>
     <script src="game1.js"></script>
