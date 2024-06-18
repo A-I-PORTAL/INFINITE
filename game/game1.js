@@ -248,66 +248,82 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
+    function changeLevel() {
+        window.location.href = 'level2.html'; // Assuming level2.html is the next level's page
+    }
+
+    window.addEventListener('resize', resizeGame);
+
+    document.addEventListener('keydown', moveCharacter);
+
+    document.querySelectorAll('.control-button').forEach(button => {
+        button.addEventListener('touchstart', mobileControl);
+        button.addEventListener('mousedown', mobileControl);
+    });
+
+    document.addEventListener('touchstart', preventZoom, { passive: false });
+
+    characterButton.addEventListener('click', changeCharacter);
+    backgroundButton.addEventListener('click', changeBackground);
+    document.getElementById('pause-button').addEventListener('click', togglePause);
+    levelButton.addEventListener('click', changeLevel); // Add event listener for the level button
+
+    speedSlider.addEventListener('input', () => {
+        scrollSpeed = parseInt(speedSlider.value, 10);
+    });
+
+    // Add the music functionality
+    const audio = new Audio();
+    let currentTrackIndex = 0;
+
+    // Dynamically generate the list of tracks
+    const tracks = [];
+    for (let i = 1; i <= 10; i++) { // Adjust the range as needed
+        tracks.push(`assets/music${i}.mp3`);
+    }
+
     function loadTrack(index) {
         if (index < tracks.length) {
             audio.src = tracks[index];
             audio.load();
             audio.onloadeddata = () => {
-                audio.play().catch(() => {
-                    console.log(`Failed to play: ${tracks[index]}`);
-                    loadTrack(index + 1);
+                audio.play().then(() => {
+                    console.log(`Playing: ${tracks[index]}`);
+                }).catch(error => {
+                    console.error('Playback failed', error);
                 });
             };
             audio.onerror = () => {
-                console.log(`Error loading: ${tracks[index]}`);
-                loadTrack(index + 1);
+                console.error(`Error loading track: ${tracks[index]}`);
+                // Try the next track if there's an error
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                loadTrack(currentTrackIndex);
             };
         } else {
-            console.log('No playable tracks found.');
+            console.error('Track index out of range');
         }
     }
 
-    function toggleMusic() {
-        if (audio.paused) {
-            audio.play();
-            musicBtn.textContent = 'Pause Music';
+    audio.loop = true;
+
+    // Add a button to initiate the first play to comply with autoplay policies
+    musicBtn.addEventListener('click', () => {
+        if (audio.paused && currentTrackIndex === 0) {
+            loadTrack(currentTrackIndex);
         } else {
             audio.pause();
-            musicBtn.textContent = 'Play Music';
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            loadTrack(currentTrackIndex);
         }
-    }
-
-    const tracks = ['assets/music1.mp3', 'assets/music2.mp3', 'assets/music3.mp3'];
-    const audio = new Audio();
-    loadTrack(0);
-
-    characterButton.addEventListener('click', changeCharacter);
-    backgroundButton.addEventListener('click', changeBackground);
-    musicBtn.addEventListener('click', toggleMusic);
-
-    document.addEventListener('keydown', moveCharacter);
-    document.addEventListener('touchstart', preventZoom, { passive: false });
-
-    document.getElementById('up-button').addEventListener('click', mobileControl);
-    document.getElementById('down-button').addEventListener('click', mobileControl);
-    document.getElementById('left-button').addEventListener('click', mobileControl);
-    document.getElementById('right-button').addEventListener('click', mobileControl);
-
-    speedSlider.addEventListener('input', (event) => {
-        scrollSpeed = parseFloat(event.target.value);
     });
 
-    levelButton.addEventListener('click', () => {
-        window.location.href = 'level2.html';
-    });
-
-    resizeGame();
-    window.addEventListener('resize', resizeGame);
+    loadTrack(currentTrackIndex); // Start with the first track
 
     loadCharacterImages();
     loadBackgroundImages();
-
     initCollisionObjects();
+    resizeGame();
     scrollBackground();
     applyGravity();
+    updateScore();
 });
