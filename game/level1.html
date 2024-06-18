@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Level 1</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="background"></div>
+        <img id="character" src="assets/character1.png" alt="Character">
+    </div>
+    <div id="ui-container">
+        <div id="score-board">
+            <div>Current Score: <span id="current-score">0</span></div>
+            <div>Top Score: <span id="top-score">0</span></div>
+        </div>
+        <div id="controls">
+            <button id="character-button"><img id="character-icon" src="assets/character1.png" alt="Character Icon"></button>
+            <button id="background-button"><img id="background-icon" src="assets/background1.jpg" alt="Background Icon"></button>
+            <button id="musicBtn">Pause Music</button>
+            <button id="level-button">Next Level</button>
+            <input type="range" id="speed-slider" min="0.5" max="5" value="2" step="0.1">
+        </div>
+        <div id="mobile-controls">
+            <button id="up-button">↑</button>
+            <button id="down-button">↓</button>
+            <button id="left-button">←</button>
+            <button id="right-button">→</button>
+        </div>
+    </div>
+    <script src="game1.js"></script>
+</body>
+</html>
