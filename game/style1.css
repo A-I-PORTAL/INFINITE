@@ -1,22 +1,19 @@
-body, html {
+* {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    height: 100%;
+    box-sizing: border-box;
+}
+
+body, html {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    height: 100%;
+    overflow: hidden;
 }
 
 #game-container {
     position: relative;
-    width: 800px;
-    height: 600px;
-    background-color: #a8d0e6;
+    width: 100%;
+    height: 100vh;
     overflow: hidden;
 }
 
@@ -24,81 +21,216 @@ body, html {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 3000px; /* Set this to match the background image size */
     height: 100%;
-    background-image: url('assets/background1.jpg');
+    background: url('assets/background1.jpg') repeat-x;
     background-size: cover;
-    background-repeat: repeat-x;
 }
 
 #character {
     position: absolute;
-    bottom: 0;
-    left: 50%;
+    left: 50px; /* Initial position in pixels */
+    top: 50px;  /* Initial position in pixels */
     width: 50px;
     height: auto;
-    transform: translateX(-50%);
 }
 
 .collision-object {
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-#ui-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px;
-}
-
-#score-board {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-#controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#controls button, #controls input {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-}
-
-#controls button:hover, #controls input:hover {
-    background-color: #45a049;
+    background: rgba(255, 0, 0, 0.5);
 }
 
 #mobile-controls {
     position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 240px; /* Fixed size */
+    height: 240px; /* Fixed size */
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left pause right"
+        ". down .";
+    grid-gap: 10px;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.control-button {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    line-height: 60px;
+    font-size: 20px;
+    border-radius: 50%;
+    user-select: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.control-button:active {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#up-button {
+    grid-area: up;
+}
+
+#left-button {
+    grid-area: left;
+}
+
+#pause-button {
+    grid-area: pause;
+}
+
+#down-button {
+    grid-area: down;
+}
+
+#right-button {
+    grid-area: right;
+}
+
+/* Scoreboard styles */
+#scoreboard {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    padding: 10px 20px;
+    border-radius: 20px; /* Match the gamepad design */
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+#score-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Speed Slider styles */
+#speed-container {
+    position: absolute;
+    top: 60px; /* Position it below the scoreboard */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    padding: 10px 20px;
+    border-radius: 20px; /* Match the gamepad design */
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#speed-label {
+    margin-right: 10px;
+}
+
+#speed-slider {
+    width: 100px;
+}
+
+/* Character Button styles */
+#character-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+#character-button img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Background Button styles */
+#background-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+#background-button img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Music Button styles */
+#musicBtn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+#musicBtn span {
+    font-size: 24px;
+}
+
+/* Level Button styles */
+#level-button {
+    position: absolute;
     bottom: 10px;
     right: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-#mobile-controls button {
-    width: 50px;
-    height: 50px;
-    border: none;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
-    background-color: #4CAF50;
-    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
+    user-select: none;
+    border: 2px solid rgba(0, 0, 0, 0.5);
 }
 
-#mobile-controls button:hover {
-    background-color: #45a049;
+#level-button img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
