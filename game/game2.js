@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function changeLevel() {
-        window.location.href = 'level2.html'; // Assuming level2.html is the next level's page
+        window.location.href = 'level3.html'; // Assuming level3.html is the next level's page
     }
 
     window.addEventListener('resize', resizeGame);
