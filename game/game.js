@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const characterIcon = document.getElementById('character-icon');
     const backgroundButton = document.getElementById('background-button');
     const backgroundIcon = document.getElementById('background-icon');
-    const musicButton = document.getElementById('music-button');
+    const musicBtn = document.getElementById('musicBtn'); // Music button
 
     let bgPosition = 0;
     let gravity = 0.125;
@@ -26,11 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const backgroundImages = [];
     let currentBackgroundIndex = 1;
-
-    let musicIndex = 1;
-    let music = new Audio(`assets/music1.mp3`);
-    music.loop = true;
-    music.play();
 
     const collisionObjects = [
         { x: 100, y: 450, width: 200, height: 10 },
@@ -252,15 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
         background.style.backgroundImage = `url('assets/background${currentBackgroundIndex}.jpg')`;
     }
 
-    // Function to update the music
-    musicButton.addEventListener('click', () => {
-        musicIndex = (musicIndex % 3) + 1; // Assuming 3 music tracks
-        music.pause();
-        music = new Audio(`assets/music${musicIndex}.mp3`);
-        music.loop = true;
-        music.play();
-    });
-
     window.addEventListener('resize', resizeGame);
 
     document.addEventListener('keydown', moveCharacter);
@@ -280,6 +266,53 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollSpeed = parseInt(speedSlider.value, 10);
     });
 
+    // Add the music functionality
+    const audio = new Audio();
+    let currentTrackIndex = 0;
+
+    // Dynamically generate the list of tracks
+    const tracks = [];
+    for (let i = 1; i <= 10; i++) { // Adjust the range as needed
+        tracks.push(`assets/music${i}.mp3`);
+    }
+
+    function loadTrack(index) {
+        if (index < tracks.length) {
+            audio.src = tracks[index];
+            audio.load();
+            audio.onloadeddata = () => {
+                audio.play().then(() => {
+                    console.log(`Playing: ${tracks[index]}`);
+                }).catch(error => {
+                    console.error('Playback failed', error);
+                });
+            };
+            audio.onerror = () => {
+                console.error(`Error loading track: ${tracks[index]}`);
+                // Try the next track if there's an error
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                loadTrack(currentTrackIndex);
+            };
+        } else {
+            console.error('Track index out of range');
+        }
+    }
+
+    audio.loop = true;
+
+    // Add a button to initiate the first play to comply with autoplay policies
+    musicBtn.addEventListener('click', () => {
+        if (audio.paused && currentTrackIndex === 0) {
+            loadTrack(currentTrackIndex);
+        } else {
+            audio.pause();
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            loadTrack(currentTrackIndex);
+        }
+    });
+
+    loadTrack(currentTrackIndex); // Start with the first track
+
     loadCharacterImages();
     loadBackgroundImages();
     initCollisionObjects();
@@ -288,3 +321,4 @@ document.addEventListener('DOMContentLoaded', () => {
     applyGravity();
     updateScore();
 });
+
