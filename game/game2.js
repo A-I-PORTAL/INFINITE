@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("JavaScript is running");
     const gameContainer = document.getElementById('game-container');
     const background = document.getElementById('background');
     const character = document.getElementById('character');
