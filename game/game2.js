@@ -12,49 +12,48 @@ document.addEventListener("DOMContentLoaded", function () {
     const backgroundIcon = document.getElementById('background-icon');
     const musicBtn = document.getElementById('musicBtn'); // Music button
     const levelButton = document.getElementById('level-button'); // Level button
-window.onload = function() {
-    const videoModal = document.getElementById('video-modal');
-    const closeVideoButton = document.getElementById('close-video-button');
-    const introVideo = document.getElementById('intro-video');
-    const musicButton = document.getElementById('musicBtn');
-    let isMusicPlaying = false;
-    let backgroundMusic = new Audio('assets/music.mp3');
-    backgroundMusic.loop = true;
 
-    // Start playing the video
-    introVideo.play();
+    window.onload = function() {
+        const videoModal = document.getElementById('video-modal');
+        const closeVideoButton = document.getElementById('close-video-button');
+        const introVideo = document.getElementById('intro-video');
+        const musicButton = document.getElementById('musicBtn');
+        let isMusicPlaying = false;
+        let backgroundMusic = new Audio('assets/music.mp3');
+        backgroundMusic.loop = true;
 
-    // Add event listener to close button
-    closeVideoButton.addEventListener('click', function() {
-        videoModal.style.display = 'none';
-        introVideo.pause();
-    });
+        // Start playing the video
+        introVideo.play();
 
-    // Ensure the modal is visible when the video is playing
-    introVideo.addEventListener('playing', function() {
-        videoModal.style.display = 'flex';
-    });
+        // Add event listener to close button
+        closeVideoButton.addEventListener('click', function() {
+            videoModal.style.display = 'none';
+            introVideo.pause();
+        });
 
-    introVideo.addEventListener('pause', function() {
-        videoModal.style.display = 'none';
-    });
+        // Ensure the modal is visible when the video is playing
+        introVideo.addEventListener('playing', function() {
+            videoModal.style.display = 'flex';
+        });
 
-    // Music button functionality
-    musicButton.addEventListener('click', function() {
-        if (isMusicPlaying) {
-            backgroundMusic.pause();
-            musicButton.innerHTML = '<span id="music-icon">🔊</span>';
-        } else {
-            backgroundMusic.play();
-            musicButton.innerHTML = '<span id="music-icon">🔇</span>';
-        }
-        isMusicPlaying = !isMusicPlaying;
-    });
+        introVideo.addEventListener('pause', function() {
+            videoModal.style.display = 'none';
+        });
 
-    // Other existing game logic...
-};
+        // Music button functionality
+        musicButton.addEventListener('click', function() {
+            if (isMusicPlaying) {
+                backgroundMusic.pause();
+                musicButton.innerHTML = '<span id="music-icon">🔊</span>';
+            } else {
+                backgroundMusic.play();
+                musicButton.innerHTML = '<span id="music-icon">🔇</span>';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
 
-    });
+        // Other existing game logic...
+    };
 
     let bgPosition = 0;
     let gravity = 0.125;
@@ -197,32 +196,31 @@ window.onload = function() {
         requestAnimationFrame(applyGravity);
     }
 
-function resizeGame() {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    function resizeGame() {
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
 
-    gameContainer.style.width = `${viewportWidth}px`;
-    gameContainer.style.height = `${viewportHeight}px`;
-    background.style.width = `${viewportWidth}px`;
-    background.style.height = `${viewportHeight}px`;
+        gameContainer.style.width = `${viewportWidth}px`;
+        gameContainer.style.height = `${viewportHeight}px`;
+        background.style.width = `${viewportWidth}px`;
+        background.style.height = `${viewportHeight}px`;
 
-    const characterScale = viewportWidth / 800;
-    character.style.width = `${characterScale * 50}px`;
-    character.style.height = 'auto';
+        const characterScale = viewportWidth / 800;
+        character.style.width = `${characterScale * 50}px`;
+        character.style.height = 'auto';
 
-    collisionObjects.forEach((obj, index) => {
-        const objElement = document.getElementById(`collision-object-${index}`);
-        objElement.style.left = `${obj.x}px`;
-        objElement.style.top = `${obj.y}px`;
-        objElement.style.width = `${obj.width}px`;
-        objElement.style.height = `${obj.height}px`;
-    });
+        collisionObjects.forEach((obj, index) => {
+            const objElement = document.getElementById(`collision-object-${index}`);
+            objElement.style.left = `${obj.x}px`;
+            objElement.style.top = `${obj.y}px`;
+            objElement.style.width = `${obj.width}px`;
+            objElement.style.height = `${obj.height}px`;
+        });
 
-    const mobileControls = document.getElementById('mobile-controls');
-    mobileControls.style.width = '240px';
-    mobileControls.style.height = '240px';
-}
-
+        const mobileControls = document.getElementById('mobile-controls');
+        mobileControls.style.width = '240px';
+        mobileControls.style.height = '240px';
+    }
 
     function initCollisionObjects() {
         const gameContainer = document.getElementById('game-container');
@@ -310,7 +308,7 @@ function resizeGame() {
         mobileControls.style.left = '50%';
         mobileControls.style.bottom = '10%';
         mobileControls.style.transform = 'translate(-50%, 0)';
-}
+    }
 
     document.addEventListener('keydown', moveCharacter);
 
@@ -385,4 +383,102 @@ function resizeGame() {
     applyGravity();
     updateScore();
 
+    // Add additional required changes
+
+    // Video Modal Controls
+    const videoModal = document.getElementById("video-modal");
+    const introVideo = document.getElementById("intro-video");
+    const closeVideoButton = document.getElementById("close-video-button");
+
+    closeVideoButton.addEventListener("click", function () {
+        videoModal.style.display = "none";
+        introVideo.pause();
+    });
+
+    // Music Button Controls
+    const musicIcon = document.getElementById("music-icon");
+    let musicOn = true;
+
+    musicBtn.addEventListener("click", function () {
+        musicOn = !musicOn;
+        musicIcon.textContent = musicOn ? "🔊" : "🔇";
+        // Toggle music logic here
+    });
+
+    // Character Button Controls
+    const characterImages = ["assets/character1.png", "assets/character2.png", "assets/character3.png"];
+    let currentCharacterIndex = 0;
+
+    characterButton.addEventListener("click", function () {
+        currentCharacterIndex = (currentCharacterIndex + 1) % characterImages.length;
+        character.src = characterImages[currentCharacterIndex];
+        characterIcon.src = characterImages[currentCharacterIndex];
+    });
+
+    // Background Button Controls
+    const backgroundImages = ["assets/background1.jpg", "assets/background2.jpg", "assets/background3.jpg"];
+    let currentBackgroundIndex = 0;
+
+    backgroundButton.addEventListener("click", function () {
+        currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
+        background.style.backgroundImage = `url(${backgroundImages[currentBackgroundIndex]})`;
+        backgroundIcon.src = backgroundImages[currentBackgroundIndex];
+    });
+
+    // Mobile Controls
+    const upButton = document.getElementById("up-button");
+    const leftButton = document.getElementById("left-button");
+    const downButton = document.getElementById("down-button");
+    const rightButton = document.getElementById("right-button");
+    const pauseButton = document.getElementById("pause-button");
+
+    upButton.addEventListener("click", function () {
+        console.log("Up button clicked");
+        // Add movement logic here
+    });
+
+    leftButton.addEventListener("click", function () {
+        console.log("Left button clicked");
+        // Add movement logic here
+    });
+
+    downButton.addEventListener("click", function () {
+        console.log("Down button clicked");
+        // Add movement logic here
+    });
+
+    rightButton.addEventListener("click", function () {
+        console.log("Right button clicked");
+        // Add movement logic here
+    });
+
+    pauseButton.addEventListener("click", function () {
+        console.log("Pause button clicked");
+        // Add pause logic here
+    });
+
+    // Speed Slider Controls
+    speedSlider.addEventListener("input", function () {
+        const speed = speedSlider.value;
+        console.log(`Speed set to ${speed}`);
+        // Adjust speed logic here
+    });
+
+    // Score Display Logic
+    const currentScoreElem = document.getElementById("current-score");
+    const topScoreElem = document.getElementById("top-score");
+    let currentScore = 0;
+    let topScore = 0;
+
+    function updateScore() {
+        currentScore++;
+        currentScoreElem.textContent = currentScore;
+        if (currentScore > topScore) {
+            topScore = currentScore;
+            topScoreElem.textContent = topScore;
+        }
+    }
+
+    // Example score update interval
+    setInterval(updateScore, 1000);
 });
