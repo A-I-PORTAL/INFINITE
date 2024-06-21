@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoModal = document.getElementById('video-modal');
     const closeVideoButton = document.getElementById('close-video-button');
     const introVideo = document.getElementById('intro-video');
+    const playVideoButton = document.getElementById('play-video-button');
     let isMusicPlaying = false;
     const audio = new Audio();
     let currentTrackIndex = 0;
@@ -54,11 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         introVideo.play().catch(error => {
             console.error('Video autoplay failed:', error);
         });
+        playVideoButton.style.display = 'none';
     }
 
     function startGame() {
         // Play the intro video and the background music
-        playIntroVideo();
         loadTrack(currentTrackIndex);
 
         // Add event listener for the music button to toggle play/pause
@@ -88,16 +89,14 @@ document.addEventListener('DOMContentLoaded', () => {
             videoModal.style.display = 'none';
         });
 
+        // Add event listener for the play button on the video modal
+        playVideoButton.addEventListener('click', playIntroVideo);
+
         // Other existing game logic...
     }
 
-    // Check for user interaction to start the game
-    document.addEventListener('click', startGame, { once: true });
-    document.addEventListener('keydown', startGame, { once: true });
-
-    window.onload = startGame;
-
-    // Other existing game logic...
+    // Initialize the game
+    startGame();
 });
 
     let bgPosition = 0;
