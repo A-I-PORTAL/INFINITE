@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', () => {
     console.log("JavaScript is running");
     const gameContainer = document.getElementById('game-container');
     const background = document.getElementById('background');
@@ -17,15 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const videoModal = document.getElementById('video-modal');
         const closeVideoButton = document.getElementById('close-video-button');
         const introVideo = document.getElementById('intro-video');
-        const musicButton = document.getElementById('musicBtn');
-        let isMusicPlaying = false;
-        let backgroundMusic = new Audio('assets/music.mp3');
-        backgroundMusic.loop = true;
 
-        // Start playing the video
         introVideo.play();
 
-        // Add event listener to close button
         closeVideoButton.addEventListener('click', function() {
             videoModal.style.display = 'none';
             introVideo.pause();
@@ -38,18 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         introVideo.addEventListener('pause', function() {
             videoModal.style.display = 'none';
-        });
-
-        // Music button functionality
-        musicButton.addEventListener('click', function() {
-            if (isMusicPlaying) {
-                backgroundMusic.pause();
-                musicButton.innerHTML = '<span id="music-icon">🔊</span>';
-            } else {
-                backgroundMusic.play();
-                musicButton.innerHTML = '<span id="music-icon">🔇</span>';
-            }
-            isMusicPlaying = !isMusicPlaying;
         });
 
         // Other existing game logic...
@@ -382,103 +364,4 @@ document.addEventListener("DOMContentLoaded", function () {
     scrollBackground();
     applyGravity();
     updateScore();
-
-    // Add additional required changes
-
-    // Video Modal Controls
-    const videoModal = document.getElementById("video-modal");
-    const introVideo = document.getElementById("intro-video");
-    const closeVideoButton = document.getElementById("close-video-button");
-
-    closeVideoButton.addEventListener("click", function () {
-        videoModal.style.display = "none";
-        introVideo.pause();
-    });
-
-    // Music Button Controls
-    const musicIcon = document.getElementById("music-icon");
-    let musicOn = true;
-
-    musicBtn.addEventListener("click", function () {
-        musicOn = !musicOn;
-        musicIcon.textContent = musicOn ? "🔊" : "🔇";
-        // Toggle music logic here
-    });
-
-    // Character Button Controls
-    const characterImages = ["assets/character1.png", "assets/character2.png", "assets/character3.png"];
-    let currentCharacterIndex = 0;
-
-    characterButton.addEventListener("click", function () {
-        currentCharacterIndex = (currentCharacterIndex + 1) % characterImages.length;
-        character.src = characterImages[currentCharacterIndex];
-        characterIcon.src = characterImages[currentCharacterIndex];
-    });
-
-    // Background Button Controls
-    const backgroundImages = ["assets/background1.jpg", "assets/background2.jpg", "assets/background3.jpg"];
-    let currentBackgroundIndex = 0;
-
-    backgroundButton.addEventListener("click", function () {
-        currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
-        background.style.backgroundImage = `url(${backgroundImages[currentBackgroundIndex]})`;
-        backgroundIcon.src = backgroundImages[currentBackgroundIndex];
-    });
-
-    // Mobile Controls
-    const upButton = document.getElementById("up-button");
-    const leftButton = document.getElementById("left-button");
-    const downButton = document.getElementById("down-button");
-    const rightButton = document.getElementById("right-button");
-    const pauseButton = document.getElementById("pause-button");
-
-    upButton.addEventListener("click", function () {
-        console.log("Up button clicked");
-        // Add movement logic here
-    });
-
-    leftButton.addEventListener("click", function () {
-        console.log("Left button clicked");
-        // Add movement logic here
-    });
-
-    downButton.addEventListener("click", function () {
-        console.log("Down button clicked");
-        // Add movement logic here
-    });
-
-    rightButton.addEventListener("click", function () {
-        console.log("Right button clicked");
-        // Add movement logic here
-    });
-
-    pauseButton.addEventListener("click", function () {
-        console.log("Pause button clicked");
-        // Add pause logic here
-    });
-
-    // Speed Slider Controls
-    speedSlider.addEventListener("input", function () {
-        const speed = speedSlider.value;
-        console.log(`Speed set to ${speed}`);
-        // Adjust speed logic here
-    });
-
-    // Score Display Logic
-    const currentScoreElem = document.getElementById("current-score");
-    const topScoreElem = document.getElementById("top-score");
-    let currentScore = 0;
-    let topScore = 0;
-
-    function updateScore() {
-        currentScore++;
-        currentScoreElem.textContent = currentScore;
-        if (currentScore > topScore) {
-            topScore = currentScore;
-            topScoreElem.textContent = topScore;
-        }
-    }
-
-    // Example score update interval
-    setInterval(updateScore, 1000);
 });
