@@ -11,14 +11,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundIcon = document.getElementById('background-icon');
     const musicBtn = document.getElementById('musicBtn'); // Music button
     const levelButton = document.getElementById('level-button'); // Level button
-    const closeVideoButton = document.getElementById('close-video-button');
+window.onload = function() {
     const videoModal = document.getElementById('video-modal');
+    const closeVideoButton = document.getElementById('close-video-button');
     const introVideo = document.getElementById('intro-video');
 
-    // New Event Listener for Closing Video Modal
-    closeVideoButton.addEventListener('click', () => {
+    introVideo.play();
+
+    closeVideoButton.addEventListener('click', function() {
         videoModal.style.display = 'none';
         introVideo.pause();
+    });
+
+    // Add event listener to video element to ensure it plays when visible
+    introVideo.addEventListener('playing', function() {
+        videoModal.style.display = 'flex';
+    });
+
+    introVideo.addEventListener('pause', function() {
+        videoModal.style.display = 'none';
+    });
+
+    // Other existing game logic...
+
+};
+
     });
 
     let bgPosition = 0;
@@ -350,6 +367,4 @@ function resizeGame() {
     applyGravity();
     updateScore();
 
-    // Ensure the video auto-plays on page load
-    introVideo.play();
 });
