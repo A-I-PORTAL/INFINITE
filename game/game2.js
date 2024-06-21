@@ -13,9 +13,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const musicBtn = document.getElementById('musicBtn'); // Music button
     const levelButton = document.getElementById('level-button'); // Level button
 
-    window.onload = function() {
-        playIntroVideo();
+    const videoModal = document.getElementById('video-modal');
+    const closeVideoButton = document.getElementById('close-video-button');
+    const introVideo = document.getElementById('intro-video');
+    let isMusicPlaying = false;
+    const audio = new Audio();
+    let currentTrackIndex = 0;
 
+    // Dynamically generate the list of tracks
+    const tracks = [];
+    for (let i = 1; i <= 10; i++) { // Adjust the range as needed
+        tracks.push(`assets/music${i}.mp3`);
+    }
+
+    function loadTrack(index) {
+        if (index < tracks.length) {
+            audio.src = tracks[index];
+            audio.load();
+            audio.onloadeddata = () => {
+                audio.play().then(() => {
+                    console.log(`Playing: ${tracks[index]}`);
+                }).catch(error => {
+                    console.error('Playback failed', error);
+                });
+            };
+            audio.onerror = () => {
+                console.error(`Error loading track: ${tracks[index]}`);
+                // Try the next track if there's an error
+                currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+                loadTrack(currentTrackIndex);
+            };
+        } else {
+            console.error('Track index out of range');
+        }
+    }
+
+    audio.loop = true;
+
+    function playIntroVideo() {
+        introVideo.play().catch(error => {
+            console.error('Video autoplay failed:', error);
+        });
+    }
+
+    function startGame() {
+        // Play the intro video and the background music
+        playIntroVideo();
+        loadTrack(currentTrackIndex);
+
+        // Add event listener for the music button to toggle play/pause
+        musicBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.innerHTML = '<span id="music-icon">🔇</span>';
+            } else {
+                audio.pause();
+                musicBtn.innerHTML = '<span id="music-icon">🔊</span>';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+
+        // Add event listener for the close button on the video modal
         closeVideoButton.addEventListener('click', function() {
             videoModal.style.display = 'none';
             introVideo.pause();
@@ -31,7 +89,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Other existing game logic...
-    };
+    }
+
+    // Check for user interaction to start the game
+    document.addEventListener('click', startGame, { once: true });
+    document.addEventListener('keydown', startGame, { once: true });
+
+    window.onload = startGame;
+
+    // Other existing game logic...
+});
 
     let bgPosition = 0;
     let gravity = 0.125;
