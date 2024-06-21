@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundIcon = document.getElementById('background-icon');
     const musicBtn = document.getElementById('musicBtn'); // Music button
     const levelButton = document.getElementById('level-button'); // Level button
+    const closeVideoButton = document.getElementById('close-video-button');
+    const videoContainer = document.getElementById('video-container');
+
+    closeVideoButton.addEventListener('click', () => {
+        videoContainer.style.display = 'none';
+    });
 
     let bgPosition = 0;
     let gravity = 0.125;
