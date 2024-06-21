@@ -14,11 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const levelButton = document.getElementById('level-button'); // Level button
 
     window.onload = function() {
-        const videoModal = document.getElementById('video-modal');
-        const closeVideoButton = document.getElementById('close-video-button');
-        const introVideo = document.getElementById('intro-video');
-
-        introVideo.play();
+        playIntroVideo();
 
         closeVideoButton.addEventListener('click', function() {
             videoModal.style.display = 'none';
