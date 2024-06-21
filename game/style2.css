@@ -1,3 +1,4 @@
+/* Existing styles */
 * {
     margin: 0;
     padding: 0;
@@ -30,11 +31,49 @@ body, html {
     background-size: cover;
 }
 
+/* New styles for video modal */
+#video-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    max-width: 600px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
+#intro-video {
+    width: 100%;
+    border-radius: 10px;
+}
+
+#close-video-button {
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Remaining existing styles */
 #character {
     position: absolute;
-    left: 50px; /* Initial position in pixels */
-    top: 50px;  /* Initial position in pixels */
+    left: 50px;
+    top: 50px;
     width: 50px;
     height: auto;
 }
@@ -63,7 +102,6 @@ body, html {
     border-radius: 20px;
     padding: 20px;
 }
-
 
 .control-button {
     width: 60px;
@@ -111,9 +149,9 @@ body, html {
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    background: rgba(0, 0, 0, 0.3);
     padding: 10px 20px;
-    border-radius: 20px; /* Match the gamepad design */
+    border-radius: 20px;
     color: white;
     font-size: 20px;
     text-align: center;
@@ -128,12 +166,12 @@ body, html {
 /* Speed Slider styles */
 #speed-container {
     position: absolute;
-    top: 60px; /* Position it below the scoreboard */
+    top: 60px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background */
+    background: rgba(0, 0, 0, 0.3);
     padding: 10px 20px;
-    border-radius: 20px; /* Match the gamepad design */
+    border-radius: 20px;
     color: white;
     font-size: 20px;
     text-align: center;
@@ -213,8 +251,8 @@ body, html {
     border: 2px solid rgba(0, 0, 0, 0.5);
 }
 
-#musicBtn span {
-    font-size: 24px;
+#music-icon {
+    font-size: 30px;
 }
 
 /* Level Button styles */
@@ -238,47 +276,4 @@ body, html {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-}
-
-/* Video Container styles */
-#video-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 512px;
-    height: 512px;
-    border-radius: 50%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000; /* Ensure it is above all other elements */
-}
-
-/* Video styles */
-#intro-video {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* Close Video Button styles */
-#close-video-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 0, 0, 0.5);
-    color: white;
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    cursor: pointer;
-    user-select: none;
 }
