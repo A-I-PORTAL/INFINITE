@@ -12,10 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const musicBtn = document.getElementById('musicBtn'); // Music button
     const levelButton = document.getElementById('level-button'); // Level button
     const closeVideoButton = document.getElementById('close-video-button');
-    const videoContainer = document.getElementById('video-container');
+    const videoModal = document.getElementById('video-modal');
+    const introVideo = document.getElementById('intro-video');
 
+    // New Event Listener for Closing Video Modal
     closeVideoButton.addEventListener('click', () => {
-        videoContainer.style.display = 'none';
+        videoModal.style.display = 'none';
+        introVideo.pause();
     });
 
     let bgPosition = 0;
@@ -346,4 +349,7 @@ function resizeGame() {
     scrollBackground();
     applyGravity();
     updateScore();
+
+    // Ensure the video auto-plays on page load
+    introVideo.play();
 });
