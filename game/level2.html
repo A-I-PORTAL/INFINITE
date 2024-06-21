@@ -10,16 +10,6 @@
     <div id="game-container">
         <div id="background"></div>
         <img id="character" src="assets/character1.png" alt="Character">
-
-        <!-- Video Container -->
-        <div id="video-container">
-            <video id="intro-video" width="512" height="512" autoplay loop>
-                <source src="assets/video1.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div id="close-video-button" class="control-button">X</div>
-        </div>
-
         <!-- Character Change Button -->
         <div id="character-button" class="control-button">
             <img id="character-icon" src="assets/character1.png" alt="Character Icon">
@@ -52,6 +42,11 @@
             <div id="down-button" class="control-button">↓</div>
             <div id="right-button" class="control-button">→</div>
             <div id="pause-button" class="control-button">⏸️</div>
+        </div>
+        <!-- Video Modal -->
+        <div id="video-modal">
+            <video id="intro-video" src="assets/video1.mp4" loop autoplay></video>
+            <div id="close-video-button">X</div>
         </div>
     </div>
     <script src="game2.js"></script>
