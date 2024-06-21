@@ -15,15 +15,21 @@ window.onload = function() {
     const videoModal = document.getElementById('video-modal');
     const closeVideoButton = document.getElementById('close-video-button');
     const introVideo = document.getElementById('intro-video');
+    const musicButton = document.getElementById('musicBtn');
+    let isMusicPlaying = false;
+    let backgroundMusic = new Audio('assets/music.mp3');
+    backgroundMusic.loop = true;
 
+    // Start playing the video
     introVideo.play();
 
+    // Add event listener to close button
     closeVideoButton.addEventListener('click', function() {
         videoModal.style.display = 'none';
         introVideo.pause();
     });
 
-    // Add event listener to video element to ensure it plays when visible
+    // Ensure the modal is visible when the video is playing
     introVideo.addEventListener('playing', function() {
         videoModal.style.display = 'flex';
     });
@@ -32,8 +38,19 @@ window.onload = function() {
         videoModal.style.display = 'none';
     });
 
-    // Other existing game logic...
+    // Music button functionality
+    musicButton.addEventListener('click', function() {
+        if (isMusicPlaying) {
+            backgroundMusic.pause();
+            musicButton.innerHTML = '<span id="music-icon">🔊</span>';
+        } else {
+            backgroundMusic.play();
+            musicButton.innerHTML = '<span id="music-icon">🔇</span>';
+        }
+        isMusicPlaying = !isMusicPlaying;
+    });
 
+    // Other existing game logic...
 };
 
     });
