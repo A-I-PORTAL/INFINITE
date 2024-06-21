@@ -241,8 +241,8 @@ body, html {
 /* Music Button styles */
 #musicBtn {
     position: absolute;
-    top: 10px;
-    right: 80px;
+    bottom: 10px;
+    left: 10px;
     width: 60px;
     height: 60px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -264,7 +264,7 @@ body, html {
 #level-button {
     position: absolute;
     bottom: 10px;
-    left: 10px;
+    right: 10px;
     width: 60px;
     height: 60px;
     background-color: rgba(0, 0, 0, 0.5);
