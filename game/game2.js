@@ -72,14 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
         videoModal.style.display = 'none';
     });
     musicBtn.addEventListener('click', () => {
-        if (audio.paused) {
-            audio.play();
-            musicBtn.innerHTML = '<span id="music-icon">🔇</span>';
-        } else {
-            audio.pause();
-            musicBtn.innerHTML = '<span id="music-icon">🔊</span>';
-        }
-        isMusicPlaying = !isMusicPlaying;
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+        loadTrack(currentTrackIndex);
     });
 
     // Initialize the game
