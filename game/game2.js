@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startGame() {
-        // Play the intro video and the background music
+        // Play the background music
         loadTrack(currentTrackIndex);
 
         // Add event listener for the music button to toggle play/pause
